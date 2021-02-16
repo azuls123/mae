@@ -1,0 +1,154 @@
+<div class="col-lg-12 row">
+  <div class="col-md-5">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 *ngIf="!newTaller._id" class="mb-0">Ingreso de Talleres</h5>
+        <h5 *ngIf="newTaller._id" class="mb-0">Edici&oacute;n de Talleres</h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <form class="container row p-2" action="">
+          <label for="" class="col-md-4">
+            <p class="pb-0 mb-0"><strong>RUC:*</strong></p>
+          </label>
+          <input type="text" class="form-control col-md-8 mb-3" #Ruc id="Ruc" name="Ruc" [(ngModel)]="newTaller.RUC" />
+          <label for="" class="col-md-4">
+            <p class="pb-0 mb-0"><strong>Nombre del Taller:*</strong></p>
+          </label>
+          <input type="text" class="form-control col-md-8 mb-3" #Nombre id="Nombre" name="Nombre"
+            [(ngModel)]="newTaller.Nombre" />
+          <label for="" class="col-md-4">
+            <p class="pb-0 mb-0"><strong>Dirección:*</strong></p>
+          </label>
+          <input type="text" class="form-control col-md-8 mb-3" #Direccion id="Direccion" name="Direccion"
+            [(ngModel)]="newTaller.Direccion" />
+          <hr class="col-12" />
+          <div class="col-12">
+            <button class="btn btn-danger pull-left" (click)="initNewTaller()">
+              <i class="fa fa-eraser"></i>
+              Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit()">
+              <i class="fa fa-save"></i>
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">Listado de Talleres</h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="row">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fa fa-search ml-2 mr-1"></i>
+              </span>
+            </div>
+            <input type="text" class="form-control border-0 col-12" id="searchTextTaller" #searchTextTaller
+              name="searchTextTaller" />
+            <div class="btn-group">
+              <button class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadown-none">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadown rounded-0">
+                <a href="javascript:void(0);" (click)="typeTaller = 'todo'; defineTaller();"
+                  class="dropdown-item">Todo</a>
+                <a href="javascript:void(0);" (click)="typeTaller = 'ruc'; defineTaller();"
+                  class="dropdown-item">RUC</a>
+                <a href="javascript:void(0);" (click)="typeTaller = 'nombre'; defineTaller();"
+                  class="dropdown-item">Nombre del Taller</a>
+                <a href="javascript:void(0);" (click)="typeTaller = 'direccion'; defineTaller();"
+                  class="dropdown-item">Dirección</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table table-responsive-sm table-striped table-sm table-bordered table-hover"   data-toggle="modal"
+        data-target="#taller-modal">
+          <thead>
+            <tr>
+              <th>RUC</th>
+              <th>Nombre</th>
+              <th>Dirección</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let taller of Talleres" (click)="viewedTaller = taller;" [class.bg-deleted]="!taller.Activo" class="selectable">
+              <td>{{ taller.RUC }}</td>
+              <td>{{ taller.Nombre }}</td>
+              <td>{{ taller.Direccion }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls id="talleres_tbl" class="text-center" maxSize="3" directionLinks="true" autoHide="true"
+          responsive="true" previousLabel="Atrás" nextLabel="Siguiente" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"
+          (pageBoundsCorrection)="paginationDataTalleres.currentPage = $event"
+          (pageChange)="paginationDataTalleres.currentPage = $event"></pagination-controls>
+
+      </div>
+      
+      <div class="card-footer">
+        <!-- <img src="/src/assets/img/logos/mae16-9.png" alt=""> -->
+        <button class="btn btn-info pull-right" (click)="getPdf()">
+          <i class="fas fa-file-pdf"></i> Guardar Reporte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="taller-modal" tabindex="-1" *ngIf="viewedTaller" role="dialog" aria-labelledby="modal-info-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title">
+          <i class="fa fa-info"></i> Informaci&oacute;n del Taller {{viewedTaller.Nombre}}
+        </h4>
+        <button class="close" data-dismiss="modal" aria-label="Cerrar"><span class=""
+            aria-hidden="true"></span></button>
+      </div>
+      <div class="modal-body row pl-5 pr-5">
+        <label for="" class="label-form col-md-4"> RUC: </label>
+        <span class="col-md-8"> {{viewedTaller.RUC}} </span>
+        <label for="" class="label-form col-md-4"> Nombre: </label>
+        <span class="col-md-8"> {{viewedTaller.Nombre}} </span>
+        <label for="" class="label-form col-md-4"> Dirección:</label>
+        <span class="col-md-8"> {{viewedTaller.Direccion}} </span>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" (click)="newTaller = viewedTaller;" data-dismiss="modal" aria-label="Editar Taller">
+            <i class="fa fa-edit"></i> Editar el Taller
+          </button>
+          <button class="btn pull-right" data-dismiss="modal"
+          [class.btn-outline-warning]="viewedTaller.Activo" [class.btn-warning]='!viewedTaller.Activo'
+            aria-label="Desactivar/Reactivar">
+            <i class="fa" [class.fa-eye]="!viewedTaller.Activo" [class.fa-eye-slash]="viewedTaller.Activo"></i>
+            <span *ngIf="viewedTaller.Activo">Desactivar Taller</span>
+            <span *ngIf="!viewedTaller.Activo">Reactivar Taller</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

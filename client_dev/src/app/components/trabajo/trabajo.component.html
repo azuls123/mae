@@ -1,0 +1,134 @@
+<div class="col-lg-12 row">
+  <div class="col-md-5">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Formulario de Trabajo
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <form class="container row">
+          <label for="" class="label-form col-md-4">Tipo:*</label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" list="tipos" id="Tipo" name="Tipo" #Tipo
+              [(ngModel)]="NewTrabajo.Tipo">
+            <datalist id="tipos">
+              <option value="Preventivo"></option>
+              <option value="Correctivo"></option>
+            </datalist>
+          </div>
+          <label for="" class="label-form col-md-4">Descripción:*</label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" id="Descripcion" name="Descripcion" #Descripcion
+              [(ngModel)]="NewTrabajo.Descripcion">
+          </div>
+          <div class="col">
+            <button class="btn btn-danger pull-left" (click)="clearData()">
+              <i class="fa fa-eraser"></i> Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit()">
+              <i class="fa fa-save"></i> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Formulario de Trabajo
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-transparent border-0">
+              <i class="fa fa-search ml-2 mr-1"></i>
+            </span>
+            <input type="text" (keyup)="defineTrabajo()" (change)="defineTrabajo()" class="form-control" id="searchTextTrabajo" name="searchTextTrabajo" [(ngModel)]="searchTextTrabajo">
+            <div class="btn-group">
+              <button typeEmpleado="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'todo'" >Todo</a>
+                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'tipo'" >Tipo</a>
+                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'descripcion'" >Descripción</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table table-responsive-sm table-striped table-sm table-bordered table-hover">
+          <thead>
+            <tr>
+              <th width="25%">Tipo</th>
+              <th width="75%">Descripci&oacute;n</th>
+            </tr>
+          </thead>
+          <tbody class="selectable">
+            <tr *ngFor="let trabajo of Trabajos" (click)="viewedTrabajo = trabajo" [class.bg-deleted]="!trabajo.Activo"  data-toggle="modal"
+            data-target="#info-modal">
+              <td> {{trabajo.Tipo}} </td>
+              <td> {{trabajo.Descripcion}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="card-footer">
+        <!-- <img src="/src/assets/img/logos/mae16-9.png" alt=""> -->
+        <button class="btn btn-info pull-right" (click)="getPdf()">
+          <i class="fas fa-file-pdf"></i> Guardar Reporte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" *ngIf="viewedTrabajo" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header sate modal-info">
+        <h4 class="modal-title"><i class="fas fa-tools"></i>{{viewedTrabajo.Tipo}}</h4>
+        <button class="close" data-dismiss="modal" aria-label="Close"><span aria--hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        {{viewedTrabajo.Descripcion}}
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
+            (click)="NewTrabajo = viewedTrabajo">
+            <i class="fa fa-edit"></i>
+            Editar
+          </button>
+          <button class="btn pull-right" (click)="toDelete(viewedTrabajo)" data-dismiss="modal" aria-label="Close"
+            [class.btn-outline-warning]="viewedTrabajo.Activo" [class.btn-warning]="!viewedTrabajo.Activo">
+            <i class="fa" [class.fa-eye]="!viewedTrabajo.Activo" [class.fa-eye-slash]="viewedTrabajo.Activo"></i>
+            &nbsp;
+            <span *ngIf="viewedTrabajo.Activo">Desactivar</span>
+            <span *ngIf="!viewedTrabajo.Activo">Reactivar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

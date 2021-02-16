@@ -1,0 +1,431 @@
+<div class="col-lg-12 row">
+  <div class="col-md-5">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Formulario de Registro de Usuarios
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <span *ngIf="!newUsuario._id">
+          <button class="btn btn-block mb-2" [class.btn-success]="isNew" [class.btn-info]="!isNew"
+            (click)="isNew = !isNew; SelectedEmpleado = null;  newUsuario.Empleado = ''">
+            <span *ngIf="isNew">Cambiar a Seleccion de Empleados</span>
+            <span *ngIf="!isNew">Cambiar a Ingreso de Nuevo Empleado</span>
+          </button>
+          <form *ngIf="!isNew" class="container row bg-white">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-transparent border-0">
+                  <i class="fa fa-search ml-2 mr-1"></i>
+                </span>
+                <input class="form-control border-0" type="text" id=searchTextEmpleado name=searchTextEmpleado
+                  (change)="defineEmpleado();" (keyup)="defineEmpleado();" [(ngModel)]="searchTextEmpleado"
+                  placeholder="{{searchTitleEmpleado}}">
+                <div class="btn-group">
+                  <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'todo'; defineEmpleado();">Todo</a>
+                    <!-- <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'telefono'; defineEmpleado();">Tel&eacute;fono</a> -->
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'nombres'; defineEmpleado();">Nombres</a>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'apellidos'; defineEmpleado();">Apellidos</a>
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'cedula'; defineEmpleado();">C&eacute;dula</a>
+                    <!-- <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'cargo'; defineEmpleado();">Cargo</a> -->
+                    <a class="dropdown-item" href="javascript:void(0);"
+                      (click)="typeEmpleado = 'area'; defineEmpleado();">Area</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <table *ngIf="Empleados && Empleados.length >=1"
+              class="table table-sm table-striped table-sm table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="p-0"></th>
+                  <th>
+                    Cédula
+                  </th>
+                  <th>
+                    Nombres
+                  </th>
+                  <th>
+                    Cargo
+                  </th>
+                  <th>
+                    Area
+                  </th>
+                  <!-- <th>
+                    Teléfono
+                  </th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let empleado of Empleados | paginate: paginationDataEmpleados" class="selectable"
+                  [class.bg-deleted]="!empleado.Activo"
+                  (click)="SelectedEmpleado = empleado; newUsuario.Empleado = empleado._id"
+                  [class.bg-success-ligth]="SelectedEmpleado && SelectedEmpleado._id == empleado._id">
+                  <td class="p-0">
+                    <i *ngIf="!SelectedEmpleado || SelectedEmpleado._id != empleado._id"
+                      class="far fa-square text-info"></i>
+                    <i *ngIf="SelectedEmpleado && SelectedEmpleado._id == empleado._id"
+                      class="far fa-check-square text-success"></i>
+                  </td>
+                  <td>
+                    {{empleado.Ci}}
+                  </td>
+                  <td>
+                    {{empleado.Nombres + ' ' + empleado.Apellidos}}
+                  </td>
+                  <td>
+                    {{empleado.Cargo}}
+                  </td>
+                  <td>
+                    {{empleado.Area}}
+                  </td>
+                  <!-- <td>
+                    {{empleado.Telefono}}
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <pagination-controls id="Empleados_tbl" maxSize="3" directionLinks="true" autoHide="true" responsive="true"
+              previousLabel="Atrás" nextLabel="Siguiente" screenReaderPaginationLabel="Pagination"
+              screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"
+              (pageBoundsCorrection)="paginationDataEmpleados.currentPage = $event"
+              (pageChange)="paginationDataEmpleados.currentPage = $event"></pagination-controls>
+
+            <div *ngIf="!Empleados || Empleados.length < 1" role="alert" class="alert alert-dismissible fade show"
+              [class.alert-danger]="searchTextEmpleado == ''" [class.alert-warning]="searchTextEmpleado != ''">
+              <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                <span aria-hidden="true">×</span>
+              </button>
+              <span *ngIf="searchTextEmpleado != ''">
+                <strong>Sin Resultados!</strong> Al parecer la Busqueda no ha devuelto ningún resultado
+              </span>
+              <span *ngIf="searchTextEmpleado == ''">
+                <strong>Sin Empleados!</strong> Al parecer no se han Registrado Empleados en el Sistema o hubo un Error
+                en
+                el Servidor
+              </span>
+            </div>
+          </form>
+          <form *ngIf="isNew" class="container row">
+            <label for="" class="label-form col-md-4"><strong>Cédula:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-address-card"></i>
+                </span>
+              </div>
+              <input type="text" pattern="[0-9]{10}" id="Ci" name="Ci" #Ci=ngModel [(ngModel)]="NewEmpleado.Ci"
+                class="form-control">
+            </div>
+            <label for="" class="label-form col-md-4"><strong>Nombres:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <input type="text" pattern="[a-zA-Z]{3,16}" class="form-control" id="Nombres" name="Nombres"
+                #Nombres=ngModel [(ngModel)]="NewEmpleado.Nombres">
+            </div>
+            <label for="" class="label-form col-md-4"><strong>Apellidos:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <input id="Apellidos" pattern="[a-zA-Z]{3,16}" name="Apellidos" #Apellidos=ngModel
+                [(ngModel)]="NewEmpleado.Apellidos" type="text" class="form-control">
+            </div>
+            <label for="" class="label-form col-md-4"><strong>Teléfono:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <input id="Telefono" pattern="[0-9]{9,14}" name="Telefono" #Telefono=ngModel
+                [(ngModel)]="NewEmpleado.Telefono" type="text" class="form-control">
+            </div>
+            <label for="" class="label-control col-md-4"><strong>Cargo:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <select #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo" id="Cargo" class="form-control">
+                <option value="Super Usuario">Super Usuario</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Conductor">Conductor</option>
+              </select>
+            </div>
+            <label for="" class="label-form col-md-4"><strong>Area:*</strong></label>
+            <div class="input-group col-md-8 mb-2">
+              <textarea name="Area" id="Area" #Area=ngModel [(ngModel)]="NewEmpleado.Area" cols="1" rows="1"
+                class="form-control"></textarea>
+            </div>
+          </form>
+        </span>
+        <span *ngIf="newUsuario._id" class="container row">
+          <label for="" class="label-form col-md-4"><strong>Nombres:</strong></label>
+          <span class="col-md-8 input-group disabled mb-2">
+            <span class="form-control">{{NewEmpleado.Nombres}}</span>
+          </span>
+          <label for="" class="label-form col-md-4"><strong>Apellidos:</strong></label>
+          <span class="col-md-8 input-group mb-2">
+            <span class="form-control">{{NewEmpleado.Apellidos}}</span>
+          </span>
+          <label for="" class="label-form col-md-4"><strong>Cédula:</strong></label>
+          <span class="col-md-8 input-group mb-2">
+            <span class="form-control">{{NewEmpleado.Ci}}</span>
+          </span>
+          <label for="" class="label-form col-md-4"><strong>Cargo:</strong></label>
+          <span class="col-md-8 input-group mb-2">
+            <span class="form-control">{{NewEmpleado.Cargo}}</span>
+          </span>
+          <label for="" class="label-form col-md-4"><strong>Area:</strong></label>
+          <span class="col-md-8 input-group mb-2">
+            <span class="form-control">{{NewEmpleado.Area}}</span>
+          </span>
+          <label for="" class="label-form col-md-4"><strong>Teléfono:</strong></label>
+          <span class="col-md-8 input-group mb-2">
+            <span class="form-control">{{NewEmpleado.Telefono}}</span>
+          </span>
+        </span>
+        <form id="formUsuario" class="container row">
+          <label for="" class="label-form col-md-4"><strong>Correo:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </div>
+            <input type="text" class="form-control" #Correo id="Correo" name="Correo" [(ngModel)]="newUsuario.Correo">
+          </div>
+          <span *ngIf="Correo.touched && Correo.valid">
+            Tocado
+          </span>
+          <button *ngIf="newUsuario._id" class="btn btn-info col-12 mb-2" data-toggle="modal"
+            data-target="#password-modal">
+            <i class="fas fa-unlock-alt"></i>
+            Cambiar de Contraseña
+          </button>
+          <label for="" *ngIf="!newUsuario._id" class="label-form col-md-4"><strong>Contraseña:*</strong></label>
+          <div *ngIf="!newUsuario._id" class="input-group col-md-8 mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-unlock-alt"></i>
+              </span>
+            </div>
+            <input type="text" class="form-control" #Contrase id="Contrase" name="Contrase"
+              [(ngModel)]="newUsuario.Contrase">
+          </div>
+          <div class="col">
+            <button class="btn btn-danger pull-left" (click)="initEmpleado(); initNewUsuario();">
+              <i class="fa fa-eraser"></i> Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit()">
+              <i class="fa fa-save"></i> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Listado de Usuarios
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="row">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fa fa-search ml-2 mr-1"></i>
+              </span>
+              <input class="form-control border-0 col-12" aria-autocomplete="none" type="text" id=searchTextUsuario
+                name=searchTextUsuario (change)="defineUsuario();" (keyup)="defineUsuario();"
+                [(ngModel)]="searchTextUsuario" placeholder="{{searchTitleUsuario}}">
+              <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'todo'; defineUsuario();">Todo</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'telefono'; defineUsuario();">Tel&eacute;fono</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'nombres'; defineUsuario();">Nombres</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'apellidos'; defineUsuario();">Apellidos</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'cedula'; defineUsuario();">C&eacute;dula</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'cargo'; defineUsuario();">Cargo</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'correo'; defineUsuario();">Correo</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeUsuario = 'area'; defineUsuario();">Area</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table *ngIf="Usuarios && Usuarios.length >=1"
+          class="table table-responsive-sm table-striped table-sm table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Correo</th>
+              <th>Cédula</th>
+              <th>Nombres</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of Usuarios  | paginate: paginationDataUsuarios" class="selectable"
+              [class.bg-deleted]="!usuario.Activo" data-toggle="modal" data-target="#info-modal"
+              (click)="viewedUsuario = usuario">
+              <td> {{usuario.Correo}} </td>
+              <td> {{usuario.Empleado.Ci}} </td>
+              <td> {{usuario.Empleado.Nombres}} {{usuario.Empleado.Apellidos}} </td>
+              <td> {{usuario.Empleado.Telefono}} </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <pagination-controls id="Usuarios_tbl" class="text-center" maxSize="3" directionLinks="true" autoHide="true"
+          responsive="true" previousLabel="Atrás" nextLabel="Siguiente" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"
+          (pageBoundsCorrection)="paginationDataUsuarios.currentPage = $event"
+          (pageChange)="paginationDataUsuarios.currentPage = $event"></pagination-controls>
+
+      </div>
+      <div class="card-footer">
+        <!-- <img src="/src/assets/img/logos/mae16-9.png" alt=""> -->
+        <button class="btn btn-info pull-right" (click)="getPdf()">
+          <i class="fas fa-file-pdf"></i> Guardar Reporte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="info-modal" *ngIf="viewedUsuario" tabindex="-1" role="dialog"
+  aria-labelledby="modal-info-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title">
+          <i class="fa fa-info"></i> Vista del Usuario
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body row pl-5 pr-5">
+        <label for="" class="label-form col-md-4"><strong>Correo:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Correo}}</span>
+        <label for="" class="label-form col-md-4"><strong>Nombres:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Nombres}}</span>
+        <label for="" class="label-form col-md-4"><strong>Apellidos:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Apellidos}}</span>
+        <label for="" class="label-form col-md-4"><strong>Cédula:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Ci}}</span>
+        <label for="" class="label-form col-md-4"><strong>Cargo:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Cargo}}</span>
+        <label for="" class="label-form col-md-4"><strong>Area:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Area}}</span>
+        <label for="" class="label-form col-md-4"><strong>Teléfono:</strong></label>
+        <span class="col-md-8">{{viewedUsuario.Empleado.Telefono}}</span>
+        <label *ngIf="viewedUsuario.Created.By" for="" class="label-form col-md-4"><strong>Creado Por:</strong></label>
+        <span *ngIf="viewedUsuario.Created.By" class="col-md-8">{{viewedUsuario.Created.By.Empleado.Nombres + ' ' +
+          viewedUsuario.Created.By.Empleado.Apellidos + ' - ' + viewedUsuario.Created.By.Empleado.Cargo}}</span>
+        <label for="" class="label-form col-md-4"><strong>Creado El:</strong></label>
+        <span class="col-md-8">{{(viewedUsuario.Created.At | amFromUnix) | date: 'medium'}}</span>
+        <label *ngIf="viewedUsuario.Updated.By" for="" class="label-form col-md-4"><strong>Editado
+            Por:</strong></label>
+        <span *ngIf="viewedUsuario.Updated.By" class="col-md-8">{{viewedUsuario.Updated.By.Empleado.Nombres + ' ' +
+          viewedUsuario.Updated.By.Empleado.Apellidos + ' - ' + viewedUsuario.Updated.By.Empleado.Cargo}}</span>
+        <label *ngIf="viewedUsuario.Updated.By" for="" class="label-form col-md-4"><strong>Editado El:</strong></label>
+        <span *ngIf="viewedUsuario.Updated.By" class="col-md-8">{{(viewedUsuario.Updated.At | amFromUnix) | date:
+          'medium'}}</span>
+
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
+            (click)="newUsuario = viewedUsuario; NewEmpleado = viewedUsuario.Empleado; isNew = true">
+            <i class="fa fa-edit"></i>
+            Editar el Empleado
+          </button>
+          <button class="btn pull-right" (click)="toDelete(viewedUsuario)" data-dismiss="modal" aria-label="Close"
+            [class.btn-outline-warning]="viewedUsuario.Activo" [class.btn-warning]="!viewedUsuario.Activo">
+            <i class="fa" [class.fa-eye]="!viewedUsuario.Activo" [class.fa-eye-slash]="viewedUsuario.Activo"></i>
+            &nbsp;
+            <span *ngIf="viewedUsuario.Activo">Desactivar Empleado</span>
+            <span *ngIf="!viewedUsuario.Activo">Reactivar Empleado</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="password-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title">
+          <i class="fa fa-info"></i> Cambiar Contraseña del Usuario
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <label for="">Nueva Contraseña</label>
+        <div class="input-group">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fas fa-unlock-alt"></i>
+            </span>
+          </div>
+          <input type="password" class="form-control" id="Password" name="Password" #Password
+            [(ngModel)]="newPassword.Contrase">
+        </div>
+        <label for="">Confirmar Contraseña</label>
+        <div class="input-group">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fas fa-unlock-alt"></i>
+            </span>
+          </div>
+          <input type="password" class="form-control" id="Confirm" name="Confirm" #Confirm
+            [(ngModel)]="newPassword.Confirmar">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" (click)="setNewPassword(); initPassword()" data-dismiss="modal"
+            aria-label="Close">
+            <i class="fa fa-edit"></i>
+            Cambiar Contraseña
+          </button>
+          <button class="btn btn-success pull-right" (click)="initPassword()" data-dismiss="modal" aria-label="Close">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

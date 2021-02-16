@@ -1,0 +1,405 @@
+<div class="col-lg-12 row">
+  <div class="col-md-6 mb-3">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Formulario de Repostaje
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <form action="" class="container row">
+          <label for="" class="label-form col-md-4">
+            <strong>
+              No. Factura:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="number" id="Numero" class="form-control" name="Numero" #Numero [(ngModel)]="newOrdenCombustible.Numero">
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Fecha:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="datetime-local" id="Fecha" class="form-control" name="Fecha" #Fecha  [(ngModel)]="newOrdenCombustible.Fecha">
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Responsable:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" [class.is-valid]="viewedResponsable && viewedResponsable._id"
+              [class.is-invalid]="!viewedResponsable || !viewedResponsable._id" class="form-control" list="empleados"
+              (change)="viewedResponsable = undefined; viewedResponsable = setResponsable(empleado.value); newOrdenCombustible.Responsable = viewedResponsable._id "
+              (keyup)=" viewedResponsable = undefined; viewedResponsable = setResponsable(empleado.value); newOrdenCombustible.Responsable = viewedResponsable._id "
+              #empleado name="empleado" id="empleado">
+            <datalist id="empleados">
+              <option *ngFor="let empleado of Empleados" value="{{empleado.Ci}}"> {{empleado.Nombres + ' ' +
+                empleado.Apellidos}} </option>
+            </datalist>
+            <!-- <input type="number" id="Numero" class="form-control" name="Numero" #Numero> -->
+          </div>
+          <!-- <div> -->
+            <label for="" *ngIf="viewedResponsable && viewedResponsable._id" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Nombres:  
+            </label>
+            <div *ngIf="viewedResponsable && viewedResponsable._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedResponsable.Nombres}}
+              </span>
+            </div>
+            <label for="" *ngIf="viewedResponsable && viewedResponsable._id" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Apellidos:
+            </label>
+            <div  *ngIf="viewedResponsable && viewedResponsable._id"class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedResponsable.Apellidos}}
+              </span>
+            </div>
+            <label *ngIf="viewedResponsable && viewedResponsable._id" for="" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Cargo:
+            </label>
+            <div *ngIf="viewedResponsable && viewedResponsable._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedResponsable.Cargo}}
+              </span>
+            </div>
+            <label *ngIf="viewedResponsable && viewedResponsable._id" for="" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Teléfono:
+            </label>
+            <div *ngIf="viewedResponsable && viewedResponsable._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedResponsable.Telefono}}
+              </span>
+            </div>
+          <!-- </div> -->
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Vehiculo:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text"  list="vehiculosList" class="form-control" 
+            [class.is-valid]="viewedVehiculo && viewedVehiculo._id"
+            [class.is-invalid]="!viewedVehiculo || !viewedVehiculo._id"
+            (change)="viewedVehiculo = undefined; viewedVehiculo = setVehiculo(PlacaVehiculo.value); newOrdenCombustible.Vehiculo = viewedVehiculo._id; newOrdenCombustible.Combustible = viewedVehiculo.Combustible"
+            (keyup)=" viewedVehiculo = undefined; viewedVehiculo = setVehiculo(PlacaVehiculo.value); newOrdenCombustible.Vehiculo = viewedVehiculo._id; newOrdenCombustible.Combustible = viewedVehiculo.Combustible"
+            id="PlacaVehiculo" name="PlacaVehiculo" #PlacaVehiculo
+            >
+            <datalist id="vehiculosList">
+              <option *ngFor="let vehiculo of Vehiculos" value="{{vehiculo.Placa}}">
+                {{vehiculo.Marca + ' ' + vehiculo.Modelo}}
+              </option>
+            </datalist>
+          </div>
+          <!-- <div> -->
+            <label for="" *ngIf="viewedVehiculo && viewedVehiculo._id" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Marca:  
+            </label>
+            <div *ngIf="viewedVehiculo && viewedVehiculo._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedVehiculo.Marca}}
+              </span>
+            </div>
+            <label for="" *ngIf="viewedVehiculo && viewedVehiculo._id" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Modelo:
+            </label>
+            <div  *ngIf="viewedVehiculo && viewedVehiculo._id"class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedVehiculo.Modelo}}
+              </span>
+            </div>
+            <label *ngIf="viewedVehiculo && viewedVehiculo._id" for="" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Año:
+            </label>
+            <div *ngIf="viewedVehiculo && viewedVehiculo._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedVehiculo.Anio}}
+              </span>
+            </div>
+            <label *ngIf="viewedVehiculo && viewedVehiculo._id" for="" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Color:
+            </label>
+            <div *ngIf="viewedVehiculo && viewedVehiculo._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedVehiculo.Color}}
+              </span>
+            </div>
+            <label *ngIf="viewedVehiculo && viewedVehiculo._id" for="" class="label-form col-md-4">
+              &nbsp;&nbsp;&nbsp;&nbsp;Combustible:
+            </label>
+            <div *ngIf="viewedVehiculo && viewedVehiculo._id" class="input-group col-md-8 mb-2">
+              <span class="form-control">
+                {{viewedVehiculo.Combustible}}
+              </span>
+            </div>
+          <!-- </div> -->
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Motivo:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" id="Motivo" class="form-control" name="Motivo" #Motivo [(ngModel)]="newOrdenCombustible.Motivo">
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Aceite:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" id="Aceite" class="form-control" name="Aceite" #Aceite [(ngModel)]="newOrdenCombustible.Aceite" >
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Cantidad:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="number" id="Cantidad" class="form-control" name="Cantidad" #Cantidad [(ngModel)]="newOrdenCombustible.Cantidad" >
+          </div>
+          <!-- <label for="" class="label-form col-md-4">
+            <strong>
+              Combustible:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <ng-container *ngIf="viewedVehiculo && viewedVehiculo._id; else CombustibleTemplate">
+              <span class="form-control"> {{viewedVehiculo.Combustible}} </span>
+            </ng-container>
+            <ng-template #CombustibleTemplate>
+              <span class="form-control">Seleccionar Vehículo</span>
+            </ng-template>
+          </div> -->
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Valor:*
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="number" id="Valor" class="form-control" name="Valor" #Valor [(ngModel)]="newOrdenCombustible.Valor">
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>
+              Iva:
+            </strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <span class="form-control">
+              <ng-container *ngIf="iva && iva._id; else IvaTemplate">
+                {{iva.Valor}}%
+              </ng-container>
+              <ng-template  #IvaTemplate>
+                Cargando IVA
+              </ng-template>
+            </span>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-danger pull-left" (click)="initNewOrdenCombustible();">
+              <i class="fa fa-eraser"></i>
+              Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit();">
+              <i class="fa fa-save"></i>
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">Listado de Repostajes</h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-transparent border-0">
+              <i class="fa fa-search ml-2 mr-1"></i>
+            </span>
+            <input class="form-control border-0" type="text" id=searchTextCombustible name=searchTextCombustible (change)="defineCombustible();"
+              (keyup)="defineCombustible();" [(ngModel)]="searchTextCombustible" placeholder="{{searchTitleCombustible}}">
+            <div class="btn-group">
+              <button typeCombustible="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'todo'; defineCombustible();">Todo</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'numero'; defineCombustible();">Número</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'motivo'; defineCombustible();">Motivo</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'aceite'; defineCombustible();">Aceite</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'combustible'; defineCombustible();">Combustible</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeCombustible = 'telefono'; defineCombustible();">Tel&eacute;fono</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'nombres'; defineCombustible();">Nombres</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeCombustible = 'apellidos'; defineCombustible();">Apellidos</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeCombustible = 'cedula'; defineCombustible();">C&eacute;dula</a>
+                <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'cargo'; defineCombustible();">Cargo</a>
+                <!-- <a class="dropdown-item" href="javascript:void(0);" (click)="typeCombustible = 'area'; defineCombustible();">Area</a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <table *ngIf="Combustibles && Combustibles.length >=1"
+          class="table table-responsive-sm table-striped table-sm table-bordered table-hover" data-toggle="modal"
+          data-target="#info-modal">
+          <thead>
+            <tr>
+              <th>
+                No.
+              </th>
+              <th>
+                Fecha
+              </th>
+              <th>
+                Responsable
+              </th>
+              <th>
+                Vehiculo
+              </th>
+              <th>
+                Combustible
+              </th>
+              <th>
+                Motivo
+              </th>
+              <th>
+                Cantidad
+              </th>
+              <th>
+                Valor
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let Combustible of Combustibles | paginate: paginationDataCombustibles" class="selectable"
+              (click)="viewedCombustible = Combustible"  data-toggle="modal"
+              data-target="#info-modal">
+              <td>
+                {{Combustible.Numero}}
+              </td>
+              <td>
+                {{Combustible.Fecha | date: 'd MMMM yyyy h:mm a'}}
+              </td>
+              <td>
+                {{Combustible.Responsable.Ci + ' - ' + Combustible.Responsable.Nombres + ' ' + Combustible.Responsable.Apellidos + '. ' + Combustible.Responsable.Cargo + '.' }}
+              </td>
+              <td>
+                {{Combustible.Vehiculo.Placa + ' - ' + Combustible.Vehiculo.Marca + ' ' + Combustible.Vehiculo.Modelo + ' ' + Combustible.Vehiculo.Anio}}
+              </td>
+              <td>
+                {{Combustible.Combustible}}
+              </td>
+              <td>
+                {{Combustible.Motivo}}
+              </td>
+              <td>
+                {{Combustible.Cantidad | number}}
+              </td>
+              <td>
+                {{Combustible.Valor | currency}} +({{Combustible.IVA.Valor + '%.'}})
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls maxSize="3" directionLinks="true" autoHide="true" responsive="true" previousLabel="Atrás"
+          nextLabel="Siguiente" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page"
+          (pageBoundsCorrection)="paginationDataCombustibles.currentPage = $event"
+          (pageChange)="paginationDataCombustibles.currentPage = $event"></pagination-controls>
+
+        <div *ngIf="!Combustibles || Combustibles.length < 1" role="alert" class="alert alert-dismissible fade show"
+          [class.alert-danger]="searchTextCombustible == ''" [class.alert-warning]="searchTextCombustible != ''">
+          <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <span *ngIf="searchTextCombustible != ''">
+            <strong>Sin Resultados!</strong> Al parecer la Busqueda no ha devuelto ningún resultado
+          </span>
+          <span *ngIf="searchTextCombustible == ''">
+            <strong>Sin Combustibles!</strong> Al parecer no se han Registrado Combustibles en el Sistema o hubo un Error en
+            el Servidor
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-info pull-right" (click)="getPdf()">
+          <i class="fas fa-file-pdf"></i> Guardar Reporte
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="info-modal" *ngIf="viewedCombustible" tabindex="-1" role="dialog"
+  aria-labelledby="modal-info-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title">
+          <i class="fa fa-info"></i> Vista de la Orden de Combustible No. {{viewedCombustible.Numero}}
+        </h4>
+        <button typeEmpleado="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body row">
+        <label for="" class="label-form col-md-4"><strong>Número:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Numero}}</span>
+        <label for="" class="label-form col-md-4"><strong>Fecha:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Fecha | date: 'd, MMMM, yyyy h:mm a'}}</span>
+        <label for="" class="label-form col-md-4"><strong>Responsable:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Responsable.Ci + ' - ' + viewedCombustible.Responsable.Nombres + ' ' + viewedCombustible.Responsable.Apellidos + '. ' + viewedCombustible.Responsable.Cargo + '.'}}</span>
+        <label for="" class="label-form col-md-4"><strong>Vehículo:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Vehiculo.Placa + ' - ' + viewedCombustible.Vehiculo.Marca + ' ' + viewedCombustible.Vehiculo.Modelo + ' ' + viewedCombustible.Vehiculo.Anio}}</span>
+        <label for="" class="label-form col-md-4"><strong>Combustible:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Combustible}}</span>
+        <label for="" class="label-form col-md-4"><strong>Motivo:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Motivo}}</span>
+        <label for="" class="label-form col-md-4"><strong>Cantidad:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Cantidad | number}}</span>
+        <label for="" class="label-form col-md-4"><strong>Valor:</strong></label>
+        <span class="col-md-8">{{viewedCombustible.Valor | currency}} +({{viewedCombustible.IVA.Valor + '%.'}}) </span>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-edit"></i>
+            Editar la Orden de Combustible
+          </button>
+          <button class="btn btn-success pull-right" (click)="getDetailedPdf(viewedCombustible)">
+            <i class="fas fa-file-pdf"></i>
+            Generar Informe
+          </button>
+          <!-- <button class="btn pull-right" data-dismiss="modal" aria-label="Close"
+            [class.btn-outline-warning]="viewedEmpleado.Activo" [class.btn-warning]="!viewedEmpleado.Activo">
+            <i class="fa" [class.fa-eye]="!viewedEmpleado.Activo" [class.fa-eye-slash]="viewedEmpleado.Activo"></i>
+            &nbsp;
+            <span *ngIf="viewedEmpleado.Activo">Desactivar Empleado</span>
+            <span *ngIf="!viewedEmpleado.Activo">Reactivar Empleado</span>
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

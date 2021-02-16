@@ -1,0 +1,306 @@
+<div class="col-lg-12 row">
+  <div class="col-md-8 offset-md-2 mb-3">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Ordenes de Trabajo
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-transparent border-0">
+              <i class="fa fa-search ml-2 mr-1"></i>
+            </span>
+            <input type="text" class="form-control border-0" id="searchTextOrdenTrabajo" name="searchTextOrdenTrabajo" [(ngModel)]="searchTextOrdenTrabajo">
+            <div class="btn-group">
+              <button class="btn dropdow-toggle no-caret bg-transparent border-0 box-shadow-none" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadown rounded-0">
+                <a href="javascript:void(0);" class="dropdown-item">Todo</a>
+                <a href="javascript:void(0);" class="dropdown-item">Solicitante</a>
+                <a href="javascript:void(0);" class="dropdown-item">Vehículo</a>
+                <a href="javascript:void(0);" class="dropdown-item">Taller</a>
+                <a href="javascript:void(0);" class="dropdown-item">Número</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table  *ngIf="!(!OrdenTrabajos || OrdenTrabajos.length < 1)"  class="table table-hover table-responsive-sm table-bordered">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Fecha</th>
+              <th>Solicitante</th>
+              <th>Vehículo</th>
+              <th>Taller</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orden of OrdenTrabajos" class="selectable" (click)="ViewOrdenTrabajo(orden)" data-target="#info-modal" data-toggle="modal">
+              <td> {{orden.Numero}} </td>
+              <td> {{(orden.Created.At | amFromUnix) | date: 'medium'}} </td>
+              <td> {{orden.Solicitante.Nombres + ' ' + orden.Solicitante.Apellidos}}  </td>
+              <td> {{orden.Vehiculo.Placa + ' ' + orden.Vehiculo.Modelo }} </td>
+              <td> {{orden.Taller.Nombre + ' ' + orden.Taller.RUC}} </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <pagination-controls id="OrdenTrabajo" maxSize="3" directionLinks="true" autoHide="true" responsive="true" previousLabel="Atrás"
+          nextLabel="Siguiente" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page" (pageBoundsCorrection)="paginationDataOrdenTrabajo.currentPage = $event"
+          (pageChange)="paginationDataOrdenTrabajo.currentPage = $event"></pagination-controls>
+
+          <div *ngIf="!OrdenTrabajos || OrdenTrabajos.length < 1" role="alert" class="alert alert-dismissible fade show"
+          [class.alert-danger]="!searchTextOrdenTrabajo || searchTextOrdenTrabajo == ''" [class.alert-warning]="searchTextOrdenTrabajo && searchTextOrdenTrabajo != ''">
+          <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <span *ngIf="searchTextOrdenTrabajo && searchTextOrdenTrabajo != ''">
+            <strong>Sin Resultados!</strong> Al parecer la Busqueda no ha devuelto ningún resultado
+          </span>
+          <span *ngIf="!searchTextOrdenTrabajo || searchTextOrdenTrabajo == ''">
+            <strong>Sin Ordenes de Trabajo!</strong> Al parecer no se han Registrado Ordenes de Trabajo en el Sistema o hubo un Error en
+            el Servidor
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0" *ngIf="newOrdenTrabajo">
+          <ng-container *ngIf="!newOrdenTrabajo._id; else EditTemplate">
+            Registro de Ordenes de Trabajo
+          </ng-container>
+          <ng-template #EditTemplate>
+            Edición de Ordenes de Trabajo
+          </ng-template>
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+          <!-- <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a> -->
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <form class="container row">
+          <label for="" class="label-form col-md-4"><strong>Vehículo:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" list="vehiculos" [class.is-valid]="viewedVehiculo && viewedVehiculo._id"
+              [class.is-invalid]="!viewedVehiculo || !viewedVehiculo._id"
+              (change)="viewedVehiculo = undefined; viewedVehiculo = setVehiculo(PlacaVehiculo.value)"
+              (keyup)=" viewedVehiculo = undefined; viewedVehiculo = setVehiculo(PlacaVehiculo.value)"
+              id="PlacaVehiculo" name="PlacaVehiculo" #PlacaVehiculo class="form-control">
+            <datalist id="vehiculos">
+              <option *ngFor="let vehiculo of Vehiculos" value="{{vehiculo.Placa}}"> {{vehiculo.Marca + ' ' +
+                vehiculo.Modelo + ' - ' + vehiculo.Anio }} </option>
+            </datalist>
+          </div>
+          <label for="" *ngIf="viewedVehiculo" class="label-form col-md-4">
+            &nbsp;&nbsp;&nbsp;&nbsp;Detalles:
+          </label>
+          <div *ngIf="viewedVehiculo" class="input-group col-md-8 mb-2 is-valid">
+            <span class="form-control">
+              {{viewedVehiculo.Marca}} {{viewedVehiculo.Modelo}} - {{viewedVehiculo.Anio}}
+            </span>
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Solicitante:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" [class.is-valid]="viewedSolicitante && viewedSolicitante._id"
+              [class.is-invalid]="!viewedSolicitante || !viewedSolicitante._id" class="form-control" list="empleados"
+              (change)="viewedSolicitante = undefined; viewedSolicitante = setSolicitante(Funcionario.value)"
+              (keyup)=" viewedSolicitante = undefined; viewedSolicitante = setSolicitante(Funcionario.value)"
+              #Funcionario name="Funcionario" id="Funcionario">
+            <datalist id="empleados">
+              <option *ngFor="let empleado of Empleados" value="{{empleado.Ci}}"> {{empleado.Nombres + ' ' +
+                empleado.Apellidos}} </option>
+            </datalist>
+          </div>
+          <label for="" *ngIf="viewedSolicitante" class="label-form col-md-4">
+            &nbsp;&nbsp;&nbsp;&nbsp;Detalles:
+          </label>
+          <div *ngIf="viewedSolicitante" class="input-group col-md-8 mb-2 is-valid">
+            <span class="form-control">
+              {{viewedSolicitante.Nombres}} {{viewedSolicitante.Apellidos}} - {{viewedSolicitante.Cargo}}
+            </span>
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Taller:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" list="talleres" [class.is-valid]="viewedTaller && viewedTaller._id"
+              [class.is-invalid]="!viewedTaller || !viewedTaller._id"
+              (change)="viewedTaller = undefined; viewedTaller = setTaller(Taller.value)"
+              (keyup)=" viewedTaller = undefined; viewedTaller = setTaller(Taller.value)" id="Taller" name="Taller"
+              #Taller>
+            <datalist id="talleres">
+              <option *ngFor="let taller of Talleres" value="{{taller.RUC}}"> {{taller.Nombre}} </option>
+            </datalist>
+          </div>
+          <label for="" *ngIf="viewedTaller" class="label-form col-md-4">
+            &nbsp;&nbsp;&nbsp;&nbsp;Detalles:
+          </label>
+          <div *ngIf="viewedTaller" class="input-group col-md-8 mb-2 is-valid">
+            <span class="form-control">
+              {{viewedTaller.Nombre}} - {{viewedTaller.Direccion}}
+            </span>
+          </div>
+          <hr class="col-12">
+          <label for="" class="col-md-12 label-form">Detalles de la Orden de Trabajo</label>
+          <table class="table table-sm table-striped table-bordered table-responsive-sm">
+            <thead>
+              <tr>
+                <th width="35%">Trabajo</th>
+                <th width="50%">Detalles</th>
+                <th width="8%">Cantidad</th>
+                <th width="7%" colspan="2">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ordenTrabajo of SelectedTrabajos; let i = index">
+                <td>
+                  <!-- <span *ngFor="let tipo of tipoTrabajos"> {{tipo}} </span> -->
+                  <select data-size="5" name="Trabajo{{i}}" title="Seleccionar un trabajo" id="Trabajo{{i}}" #Trabajo
+                    class="form-control" [(ngModel)]="ordenTrabajo.Trabajo">
+                    <optgroup *ngFor="let tipo of tipoTrabajos" label="{{tipo}}">
+                      <option [hidden]="trabajo.Tipo.toLowerCase() != tipo.toLowerCase()"
+                        *ngFor="let trabajo of Trabajos" value="{{trabajo._id}}" title="{{trabajo.Tipo}}">
+                        {{trabajo.Descripcion}}
+                      </option>
+                    </optgroup>
+                    <!-- <optgroup label="Correctivo">
+                      <option [hidden]="trabajo.Tipo != 'Correctivo'" *ngFor="let trabajo of Trabajos"
+                        value="{{trabajo._id}}" title="{{trabajo.Tipo}}">
+                        {{trabajo.Descripcion}}
+                      </option>
+                    </optgroup> -->
+                  </select>
+                  <!-- <input type="text" class="form-control" id="Trabajo{{i}}" name="Trabajo{{i}}" #Trabajo list="TrabajoList" [(ngModel)]="ordenTrabajo.Trabajo">
+                    <datalist id="TrabajoList">
+                      <option *ngFor="let trabajo of Trabajos" id="{{trabajo._id}}" data-value="{{trabajo.Tipo}}" value="Trabajos">
+                        {{trabajo.Descripcion}}
+                      </option>
+                    </datalist> -->
+                </td>
+                <td>
+                  <input type="text" class="form-control" id="Detalles{{i}}" name="Detalles{{i}}" [(ngModel)]="ordenTrabajo.Detalles">
+                  <!-- <span class="form-control">{{ordenTrabajo.Trabajo}}</span> -->
+                </td>
+                <td>
+                  <input type="number" class="form-control" id="Cantidad{{i}}" name="Cantidad{{i}}" #Cantidad
+                    [(ngModel)]="ordenTrabajo.Cantidad">
+                  <!-- <input type="text" class="form-control" id="Detalles{{i}}" name="Detalles{{i}}" #Detalles [(ngModel)]="ordenTrabajo.Detalles"> -->
+                </td>
+                <td class="pl-0 pr-0">
+                  <button class="btn btn-danger" (click)="eraseTrabajo(i)" [disabled]="SelectedTrabajos.length <=1">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+                <td class="pl-0 pr-0">
+                  <button class="btn btn-success" (click)="addNewTrabajo()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-12">
+            <button class="btn btn-danger pull-left">
+              <i class="fa fa-eraser"></i>
+              Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit()">
+              <i class="fa fa-save"></i>
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<!-- Modals -->
+<!-- Modals -->
+<!-- Modals -->
+<!-- Modals -->
+<!-- Modals -->
+
+<div class="modal fade" id="info-modal" *ngIf="viewedOrdenTrabajo" tabindex="-1" role="dialog"
+  aria-labelledby="modal-info-label">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title" id="modal-info-label"><i class="fas fa-file-invoice"></i>
+          Orden de Trabajo No.{{viewedOrdenTrabajo.Numero}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body p-3">
+        <label for="" class="label-form"><strong>Vehículo: </strong></label>
+        {{viewedOrdenTrabajo.Vehiculo.Marca}}
+        {{viewedOrdenTrabajo.Vehiculo.Modelo}} del 
+        {{viewedOrdenTrabajo.Vehiculo.Anio}} con Placa: 
+        {{viewedOrdenTrabajo.Vehiculo.Placa}}
+        <hr>
+        <label for="" class="label-form"><strong>Solicitante: </strong></label>
+        {{viewedOrdenTrabajo.Solicitante.Nombres}}
+        {{viewedOrdenTrabajo.Solicitante.Apellidos}} con Cédula: 
+        {{viewedOrdenTrabajo.Solicitante.Ci}}
+        <hr>
+        <label for="" class="label-form"><strong>Taller: </strong></label>
+        {{viewedOrdenTrabajo.Taller.Nombre}} - 
+        {{viewedOrdenTrabajo.Taller.RUC}} En la Dirección: 
+        {{viewedOrdenTrabajo.Taller.Direccion}}
+        <hr>
+        <table class="table table-sm table-striped table-bordered table-responsive-sm">
+          <thead>
+            <tr>
+              <th width="35%">Trabajo</th>
+              <th width="50%">Detalles</th>
+              <th width="8%">Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trabajo of viewedTrabajos">
+              <td> {{trabajo.Trabajo.Tipo}} {{trabajo.Trabajo.Descripcion}} </td>
+              <td> {{trabajo.Detalles}} </td>
+              <td> {{trabajo.Cantidad}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <!-- <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
+            (click)="newVehiculo = unlinkObject(viewedVehiculo); Responsable = newVehiculo.Responsable; CiResponsable = viewedVehiculo.Responsable.Ci">
+            <i class="fa fa-edit"></i>
+            Editar
+          </button>
+
+          <button class="btn pull-right" (click)="toDelete(viewedVehiculo)" data-dismiss="modal" aria-label="Close"
+            [class.btn-outline-warning]="viewedVehiculo.Activo" [class.btn-warning]="!viewedVehiculo.Activo">
+            <i class="fa" [class.fa-eye]="!viewedVehiculo.Activo" [class.fa-eye-slash]="viewedVehiculo.Activo"></i>
+            &nbsp;
+            <span *ngIf="viewedVehiculo.Activo">Desactivar</span>
+            <span *ngIf="!viewedVehiculo.Activo">Reactivar</span>
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

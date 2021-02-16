@@ -1,0 +1,278 @@
+<div class="col-lg-12 row">
+  <div class="col-md-5">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Formulario de Vehiculo
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <form class="container row">
+          <label for="" class="label-form col-md-4"><strong>Marca:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" id="Marca" name="Marca" list="Marcas" [(ngModel)]="newVehiculo.Marca">
+            <datalist id="Marcas">
+              <option *ngFor="let marca of Brands"> {{marca}}</option>
+            </datalist>
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Modelo:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Modelo id="Modelo" name="Modelo" [(ngModel)]="newVehiculo.Modelo">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Año:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Anio id="Anio" name="Anio" [(ngModel)]="newVehiculo.Anio">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Clase:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Clase id="Clase" name="Clase" [(ngModel)]="newVehiculo.Clase">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Llantas:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Llantas id="Llantas" name="Llantas"
+              [(ngModel)]="newVehiculo.Llantas">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Placa:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Placa id="Placa" name="Placa" [(ngModel)]="newVehiculo.Placa">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Matrícula:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Matricula id="Matricula" name="Matricula" [(ngModel)]="newVehiculo.Matricula">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Color:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Color id="Color" name="Color" [(ngModel)]="newVehiculo.Color">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Costo:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Costo id="Costo" name="Costo" [(ngModel)]="newVehiculo.Costo">
+          </div>
+          <label for="" class="label-form col-md-4"><strong>Kilometraje Inicial:*</strong></label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" #Costo id="Costo" name="Costo" [(ngModel)]="newVehiculo.Recorrido">
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>Combustible:*</strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" id="Combustible" name="Combustible" list="Combustibles" [(ngModel)]="newVehiculo.Combustible">
+            <datalist id="Combustibles">
+              <option >Gasolina Extra</option>
+              <option >Gasolina Super</option>
+              <option >Diesel</option>
+            </datalist>
+          </div>
+          <label for="" class="label-form col-md-4">
+            <strong>Responsable:*</strong>
+          </label>
+          <div class="input-group col-md-8 mb-2">
+            <input type="text" class="form-control" [class.is-valid]="Responsable && Responsable._id" id="Responsable" name="Responsable" list="Responsables" [(ngModel)]="CiResponsable" 
+            (keypress)="setResponsable('KEYPRESS')" (click)="setResponsable('click')" (change)="setResponsable('change')" (onfocus)="setResponsable('onfocus')" (onlostfocus)="setResponsable('lost focus')" (keyup)="setResponsable('keyup')" 
+            >
+            
+
+            <!-- aqui invoco el input con los eventos y en el data list esta el for con los datos -->
+            <datalist id="Responsables">
+              <option *ngFor="let responsable of Empleados" value="{{responsable.Ci}}"> {{responsable.Nombres}} {{responsable.Apellidos}}</option>
+            </datalist>
+          </div>
+          <label for="" class="label-form col-md-12"><strong>Características:*</strong></label>
+          <div class="input-group col-md-12 mb-2">
+            <textarea id="textarea-1" class="form-control" #Caracteristicas id="Caracteristicas" name="Caracteristicas"
+              [(ngModel)]="newVehiculo.Caracteristicas"
+              style="margin-top: 0px; margin-bottom: 0px; height: 90px;"></textarea>
+          </div>
+
+          <div class="col">
+            <button class="btn btn-danger pull-left" (click)="initNewVehiculo()">
+              <i class="fa fa-eraser"></i> Limpiar
+            </button>
+            <button class="btn btn-success pull-right" (click)="onSubmit()">
+              <i class="fa fa-save"></i> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">
+          Lista de Vehículos
+        </h5>
+        <div class="widget-controls">
+          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+          <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+          <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+        </div>
+      </div>
+      <div class="card-body widget-body bg-light">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-transparent border-0">
+              <i class="fa fa-search ml-2 mr-1"></i>
+            </span>
+            <input class="form-control border-0" type="text" id=searchTextVehiculo name=searchTextVehiculo
+              (change)="defineVehiculo();" (keyup)="defineVehiculo();" [(ngModel)]="searchTextVehiculo"
+              placeholder="{{searchTitleVehiculo}}">
+            <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'todo'; defineVehiculo();">Todo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'caracteristicas'; defineVehiculo();">Características</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'marca'; defineVehiculo();">Marca</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'anio'; defineVehiculo();">Año</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'clase'; defineVehiculo();">Clase</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'llantas'; defineVehiculo();">Llantas</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'placa'; defineVehiculo();">Placa</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'matricula'; defineVehiculo();">Matrícula</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'color'; defineVehiculo();">Color</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeVehiculo = 'costo'; defineVehiculo();">Costo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table table-hover table-responsive-sm table-bordered table-striped">
+          <thead>
+            <tr>
+              <th hidden colspan="3" class="text-center" width="5%">Opciones</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
+              <th>Placa</th>
+              <th>Matrícula</th>
+              <th>Costo</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="vehiculos">
+            <tr *ngFor="let vehiculo of vehiculos | paginate: paginationDataVehiculo" class="selectable"
+              [class.bg-deleted]="!vehiculo.Activo" (click)="viewedVehiculo = vehiculo" data-toggle="modal"
+              data-target="#info-modal">
+              <td hidden>
+                <button class="btn btn-sm btn-primary" (click)="newVehiculo = unlinkObject(vehiculo)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+              <td hidden>
+                <button class="btn btn-sm" (click)="toDelete(vehiculo)" [class.btn-outline-warning]="vehiculo.Activo"
+                  [class.btn-warning]="!vehiculo.Activo">
+                  <i class="fa" [class.fa-eye]="!vehiculo.Activo" [class.fa-eye-slash]="vehiculo.Activo"></i>
+                </button>
+              </td>
+              <td hidden>
+                <button hidden class="btn btn-info btn-sm" (click)="viewedVehiculo = vehiculo" data-toggle="modal"
+                  data-target="#info-modal">
+                  <i class="fa fa-info"></i>
+                </button>
+              </td>
+              <td>{{vehiculo.Marca}}</td>
+              <td>{{vehiculo.Modelo}}</td>
+              <td>{{vehiculo.Anio}}</td>
+              <td>{{vehiculo.Placa}}</td>
+              <td>{{vehiculo.Matricula}}</td>
+              <td class="text-right">{{vehiculo.Costo | currency}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls id="Vehículo" maxSize="3" directionLinks="true" autoHide="true" responsive="true" previousLabel="Atrás"
+          nextLabel="Siguiente" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page" (pageBoundsCorrection)="paginationDataVehiculo.currentPage = $event"
+          (pageChange)="paginationDataVehiculo.currentPage = $event"></pagination-controls>
+
+        <div *ngIf="!vehiculos || vehiculos.length < 1" role="alert" class="alert alert-dismissible fade show"
+          [class.alert-danger]="searchTextVehiculo == ''" [class.alert-warning]="searchTextVehiculo != ''">
+          <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <span *ngIf="searchTextVehiculo != ''">
+            <strong>Sin Resultados!</strong> Al parecer la Busqueda no ha devuelto ningún resultado
+          </span>
+          <span *ngIf="searchTextVehiculo == ''">
+            <strong>Sin Vehículos!</strong> Al parecer no se han Registrado Empleados en el Sistema o hubo un Error en
+            el Servidor
+          </span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <!-- <img src="/src/assets/img/logos/mae16-9.png" alt=""> -->
+        <button class="btn btn-info pull-right" (click)="getPdf()">
+          <i class="fas fa-file-pdf"></i> Guardar Reporte
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- modals -->
+<!-- modals -->
+<!-- modals -->
+<!-- modals -->
+<!-- modals -->
+
+<div class="modal fade" id="info-modal" *ngIf="viewedVehiculo" tabindex="-1" role="dialog"
+  aria-labelledby="modal-info-label">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header state modal-info">
+        <h4 class="modal-title" id="modal-info-label"><i class="fa fa-car"></i>
+          {{viewedVehiculo.Marca}} {{viewedVehiculo.Modelo}} - {{viewedVehiculo.Anio}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <p>{{viewedVehiculo.Caracteristicas}}</p>
+        <p><strong>Clase: </strong> {{viewedVehiculo.Clase}} </p>
+        <p><strong>Llantas: </strong> {{viewedVehiculo.Llantas}} </p>
+        <p><strong>Placa: </strong> {{viewedVehiculo.Placa}} </p>
+        <p><strong>Matrícula: </strong> {{viewedVehiculo.Matricula}} </p>
+        <p><strong>Color: </strong> {{viewedVehiculo.Color}} </p>
+        <p><strong>Costo: </strong> {{viewedVehiculo.Costo | currency }} </p>
+        <p><strong>Color: </strong> {{viewedVehiculo.Color}} </p>
+        <p><strong>Combustible: </strong> {{viewedVehiculo.Combustible}} </p>
+        <p><strong>Recorrido: </strong> {{viewedVehiculo.Recorrido | number}} Km </p>
+        <p><strong>Responsable: </strong> {{viewedVehiculo.Responsable.Ci + ' - ' + viewedVehiculo.Responsable.Nombres + ' ' + viewedVehiculo.Responsable.Apellidos}} </p>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
+            (click)="newVehiculo = unlinkObject(viewedVehiculo); Responsable = newVehiculo.Responsable; CiResponsable = viewedVehiculo.Responsable.Ci">
+            <i class="fa fa-edit"></i>
+            Editar el Vehiculo
+          </button>
+
+          <button class="btn pull-right" (click)="toDelete(viewedVehiculo)" data-dismiss="modal" aria-label="Close"
+            [class.btn-outline-warning]="viewedVehiculo.Activo" [class.btn-warning]="!viewedVehiculo.Activo">
+            <i class="fa" [class.fa-eye]="!viewedVehiculo.Activo" [class.fa-eye-slash]="viewedVehiculo.Activo"></i>
+            &nbsp;
+            <span *ngIf="viewedVehiculo.Activo">Desactivar Vehiculo</span>
+            <span *ngIf="!viewedVehiculo.Activo">Reactivar Vehiculo</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

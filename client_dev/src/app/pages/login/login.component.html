@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-center align-items-center w-100 h-100 login-container">
+    <div class="col-xl-4 col-md-6 col-10">
+        <div class="card border-0 box-shadow rounded-0">
+            <div class="card-header d-flex justify-content-center align-items-center border-0 box-shadow">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+            </div>
+            <div class="card-body text-center pb-1">
+                <h2>Control Vehicular del Misterio del Ambiente y Agua</h2>
+                <!-- <a routerLink="/register" class="transition">Don't have an account? Sign up now!</a> -->
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="text-left mt-4">
+                    <div class="form-group">
+                        <input [formControl]="Correo" class="form-control validation-field" placeholder="Correo" type="text">                      
+                        <small class="text-danger" *ngIf="form.get('Correo').touched && form.get('Correo').hasError('required')">Ingresar Dirección de Correo Electrónico</small>                              
+                        <small class="text-danger" *ngIf="form.get('Correo').touched && form.get('Correo').hasError('Correo')">Correo Electrónico Invalido</small>
+                    </div>
+                    <div class="form-group">
+                        <input [formControl]="Contrase" class="form-control validation-field" placeholder="Contrase" type="password">
+                        <small class="text-danger" *ngIf="form.get('Contrase').touched && form.get('Contrase').hasError('required')">Contraseña Incorrecta</small>                              
+                        <small class="text-danger" *ngIf="form.get('Contrase').touched && form.get('Contrase').hasError('minlength')">Contraseña Corta, mínimo 6 caracteres</small>
+                    </div>
+                    <div class="form-group d-flex justify-content-center" *ngIf="Message && Message.status">
+                        <div role="alert" *ngIf="Message && Message.status" 
+                            [class.alert-warning]="Message.status >=500 && Message.status <= 599" 
+                            [class.alert-danger] ="Message.status >=400 && Message.status <= 499" 
+                            [class.alert-success]="Message.status >=200 && Message.status <= 299"  
+                            class="alert alert-dismissible fade show">
+                            <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <strong>{{Message.Title}}!</strong> 
+                            {{Message.Message}}
+                        </div>
+                    </div>
+                    <div class="card-footer text-center bg-transparent">
+                        <div class="form-group">
+                            <button [disabled]="!form.valid" class="btn btn-block" type="submit">Iniciar Sesión</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card-footer text-center bg-transparent" hidden>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-square-o fa-stack-2x"></i>
+                            <i class="fa fa-facebook fa-stack-1x"></i>
+                        </span>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-square-o fa-stack-2x"></i>
+                            <i class="fa fa-twitter fa-stack-1x"></i>
+                        </span>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-square-o fa-stack-2x"></i>
+                            <i class="fa fa-google fa-stack-1x"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+       
