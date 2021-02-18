@@ -1,5 +1,5 @@
 <div class="col-lg-12 row">
-  <div class="col-md-6 offset-md-3 mb-3">
+  <div  *ngIf="isUser" class="col-md-6 offset-md-3 mb-3">
     <div widget class="card border-0 box-shadow">
       <div class="card-header transparent border-0 text-muted">
         <h5 class="mb-0">
@@ -200,28 +200,28 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fa fa-search ml-2 mr-1"></i>
               </span>
-              <input class="form-control border-0 col-12" type="text" id=searchTextSalvo name=searchTextSalvo
-                (change)="defineSalvo();" (keyup)="defineSalvo();" [(ngModel)]="searchTextSalvo"
-                placeholder="{{searchTitleSalvo}}">
-              <div class="btn-group">
-                <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'todo'; defineSalvo();">Todo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'numero'; defineSalvo();">Número de Salvo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'motivo'; defineSalvo();">Motivo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'placas'; defineSalvo();">Placas de Vehículo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'destino'; defineSalvo();">Destino</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeSalvo = 'estado'; defineSalvo();">Estado del Salvo</a>
-                </div>
+            </div>
+            <input class="form-control border-0 col-12" type="text" id=searchTextSalvo name=searchTextSalvo
+              (change)="defineSalvo();" (keyup)="defineSalvo();" [(ngModel)]="searchTextSalvo"
+              placeholder="{{searchTitleSalvo}}">
+            <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'todo'; defineSalvo();">Todo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'numero'; defineSalvo();">Número de Salvo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'motivo'; defineSalvo();">Motivo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'placas'; defineSalvo();">Placas de Vehículo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'destino'; defineSalvo();">Destino</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeSalvo = 'estado'; defineSalvo();">Estado del Salvo</a>
               </div>
             </div>
           </div>
@@ -287,7 +287,9 @@
               <td> {{salvo.Lugar.Destino}} </td>
               <td> {{salvo.Numero}} </td>
               <td> {{salvo.Conductor.Nombres + ' ' + salvo.Conductor.Apellidos + ' - ' + salvo.Conductor.Ci}} </td>
-              <td> <span class="font-weight-bold" [class.text-primary]="salvo.Estado == 'Procesado'" [class.text-danger]="salvo.Estado == 'Cancelado'"[class.text-warning]="salvo.Estado == 'Aprobado'" [class.text-success]="salvo.Estado == 'Completado'">{{salvo.Estado}}</span> </td>
+              <td> <span class="font-weight-bold" [class.text-primary]="salvo.Estado == 'Procesado'"
+                  [class.text-danger]="salvo.Estado == 'Cancelado'" [class.text-warning]="salvo.Estado == 'Aprobado'"
+                  [class.text-success]="salvo.Estado == 'Completado'">{{salvo.Estado}}</span> </td>
             </tr>
           </tbody>
         </table>
@@ -313,7 +315,10 @@
     <div class="modal-content">
       <div class="modal-header state modal-info">
         <h4 class="modal-title" id="modal-info-label"><i class="fa fa-car"></i>
-          Salvoconducto No. {{viewedSalvo.Numero}} <span  [class.text-danger]="viewedSalvo.Estado == 'Procesado'" [class.text-danger]="viewedSalvo.Estado == 'Cancelado'"[class.text-warning]="viewedSalvo.Estado == 'Aprobado'" [class.text-success]="viewedSalvo.Estado == 'Completado'">{{viewedSalvo.Estado}}</span> </h4>
+          Salvoconducto No. {{viewedSalvo.Numero}} <span [class.text-danger]="viewedSalvo.Estado == 'Procesado'"
+            [class.text-danger]="viewedSalvo.Estado == 'Cancelado'"
+            [class.text-warning]="viewedSalvo.Estado == 'Aprobado'"
+            [class.text-success]="viewedSalvo.Estado == 'Completado'">{{viewedSalvo.Estado}}</span> </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">×</span></button>
       </div>
@@ -383,18 +388,19 @@
           <label for="" class="col-md-12 mb-3">
             Estado: <span>{{viewedSalvo.Estado}}.</span>
           </label>
-          <label  *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" for="" class="col-md-12 mb-3">
+          <label *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" for=""
+            class="col-md-12 mb-3">
             <span class="input-group">
               <div class="input-group-prepend border-0 bg-transparent pl-0">
                 <span class="bg-transparent border-0 input-group-text pl-0">
-                Fecha de Regreso:&nbsp; 
-                <span *ngIf="viewedSalvo.Estado == 'Completado'">
-                  {{viewedSalvo.Fecha.Regreso | date: 'medium'}}
-                </span>
+                  Fecha de Regreso:&nbsp;
+                  <span *ngIf="viewedSalvo.Estado == 'Completado'">
+                    {{viewedSalvo.Fecha.Regreso | date: 'medium'}}
+                  </span>
                 </span>
               </div>
-              <input *ngIf="viewedSalvo.Estado == 'Aprobado'" type="datetime-local" class="form-control" #regreso id="regreso" name="regreso"
-                [(ngModel)]="viewedSalvo.Fecha.Regreso">
+              <input *ngIf="viewedSalvo.Estado == 'Aprobado'" type="datetime-local" class="form-control" #regreso
+                id="regreso" name="regreso" [(ngModel)]="viewedSalvo.Fecha.Regreso">
             </span>
           </label>
           <label for="" class="col-md-12 mb-3">
@@ -450,7 +456,8 @@
                     {{viewedSalvo.KmInicial}} Km
                   </td>
                   <td>
-                    <ng-container *ngIf="viewedSalvo.Estado == 'Procesado' && viewedSalvo.Estado == 'Cancelado' ; else ShowRecorrido">
+                    <ng-container
+                      *ngIf="viewedSalvo.Estado == 'Procesado' && viewedSalvo.Estado == 'Cancelado' ; else ShowRecorrido">
                       <ng-container *ngIf="viewedSalvo.Estado == 'Procesado'; else Canceled">
                         Aun Por Aprobar
                       </ng-container>
@@ -459,12 +466,13 @@
                       </ng-template>
                     </ng-container>
                     <ng-template #ShowRecorrido>
-                      <ng-container *ngIf="viewedSalvo.Estado == 'Completado'; else elseTemplate">
-                        {{viewedSalvo.Recorrido | number}} Km                        
+                      <ng-container *ngIf="viewedSalvo.Estado == 'Completado' || viewedSalvo.Estado == 'Cancelado' || !isUser; else elseTemplate">
+                        {{viewedSalvo.Recorrido | number}} Km
                       </ng-container>
                       <ng-template #elseTemplate>
                         <div class="input-group">
-                          <input type="number" class="form-control text-right" id="Recorrido" name="Recorrido" min="1" #Recorrido [(ngModel)]="viewedSalvo.Recorrido" >
+                          <input type="number" class="form-control text-right" id="Recorrido" name="Recorrido" min="1"
+                            #Recorrido [(ngModel)]="viewedSalvo.Recorrido">
                           <div class="input-group-append pl-0 pr-0">
                             <div class="input-group-text border-0 bg-transparent pl-0 pr-0">
                               &nbsp;Km.
@@ -485,7 +493,8 @@
             <br>
             <br>
             <hr *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" class="bg-black">
-            <p  *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" class="text-center">AUTORIZADO DIRECTOR PROVINCIAL</p>
+            <p *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" class="text-center">
+              AUTORIZADO DIRECTOR PROVINCIAL</p>
           </label>
         </form>
       </div>
@@ -501,13 +510,17 @@
             &nbsp;
             Cerrar
           </button>
-          <button class="btn btn-success pull-right" *ngIf="viewedSalvo.Estado == 'Procesado'" (click)="viewedSalvo.Estado = 'Aprobado'; newSalvoConducto = viewedSalvo; onUpdate()">
-            <i class="fas fa-check-circle"></i> Aprobar SalvoConducto 
+          <button class="btn btn-success pull-right" *ngIf="viewedSalvo.Estado == 'Procesado' && isUser"
+            (click)="viewedSalvo.Estado = 'Aprobado'; newSalvoConducto = viewedSalvo; onUpdate()">
+            <i class="fas fa-check-circle"></i> Aprobar SalvoConducto
           </button>
-          <button class="btn btn-success pull-right" *ngIf="viewedSalvo.Estado == 'Aprobado'" (click)="viewedSalvo.Estado = 'Completado'; newSalvoConducto = viewedSalvo; onUpdate(); viewedSalvo.Vehiculo.Recorrido = (viewedSalvo.Vehiculo.Recorrido + viewedSalvo.Recorrido); updateVehiculo(viewedSalvo.Vehiculo)">
-            <i class="fas fa-check-circle"></i> Completar SalvoConducto 
+          <button class="btn btn-success pull-right" *ngIf="viewedSalvo.Estado == 'Aprobado'  && isUser"
+            (click)="viewedSalvo.Estado = 'Completado'; newSalvoConducto = viewedSalvo; onUpdate(); viewedSalvo.Vehiculo.Recorrido = (viewedSalvo.Vehiculo.Recorrido + viewedSalvo.Recorrido); updateVehiculo(viewedSalvo.Vehiculo)">
+            <i class="fas fa-check-circle"></i> Completar SalvoConducto
           </button>
-          <button class="btn btn-info pull-right" *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" (click)="getDetailPdf(viewedSalvo)">
+          <!-- *ngIf="viewedSalvo.Estado == 'Aprobado' || viewedSalvo.Estado == 'Completado'" -->
+          <button class="btn btn-info pull-right"
+            (click)="getDetailPdf(viewedSalvo)">
             <i class="fas fa-file-pdf"></i> Generar Reporte
           </button>
         </div>

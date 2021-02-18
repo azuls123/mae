@@ -28,6 +28,8 @@ const Moment = require('moment');
             NewOrdenTrabajo.Solicitante             = Params.Solicitante;
             NewOrdenTrabajo.Taller      = Params.Taller;
             NewOrdenTrabajo.Vehiculo     = Params.Vehiculo;
+            NewOrdenTrabajo.Estado     = Params.Estado;
+            NewOrdenTrabajo.Iva     = Params.Iva;
     
             if (request.usuario && request.usuario.id) {
                 NewOrdenTrabajo.Created.By = request.usuario.id;
@@ -45,7 +47,7 @@ const Moment = require('moment');
         if (request.body) Query = OrdenTrabajo.find(request.body);
         // console.log(request.body);
         Query.populate({
-            path: 'Solicitante Vehiculo Taller Created.By Updated.By',
+            path: 'Solicitante Vehiculo Taller Created.By Updated.By Iva',
 
         }).exec((Error, Response) => {
             if (Error) return response.status(500).send({Message: 'Error al Obtener la Lista', Error});
@@ -55,12 +57,11 @@ const Moment = require('moment');
     }
 
     function Editar(request, response) {
-        const Id = request.params.id;
         request.body.Updated.By = request.usuario.id;
         request.body.Updated.At = Moment().unix();
         const Update = request.body;
         
-        OrdenTrabajo.findByIdAndUpdate(Id, Update, {new: true}, (Error, Updated) => {
+        OrdenTrabajo.findByIdAndUpdate(Update._id, Update, {new: true}, (Error, Updated) => {
             if (Error) return response.status(500).send({Message: 'Error al Editar el Registro', Error});
             if (!Updated || Updated == null) return response.status(404).send({Message: 'No se ha editado el Registro'})
             return response.status(200).send({Message: 'Registro Editado', OrdenTrabajo: Updated});

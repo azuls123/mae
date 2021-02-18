@@ -11,6 +11,8 @@ const Moment = require('moment');
         NewTrabajoOrden.Detalles = Params.Detalles;
         NewTrabajoOrden.Orden = Params.Orden;
         NewTrabajoOrden.Cantidad = Params.Cantidad;
+        NewTrabajoOrden.Estado = Params.Estado;
+
 
         NewTrabajoOrden.save((ErrorSave, Stored) => {
             if (ErrorSave) return response.status(500).send({Message: 'Error al Guardar el Registro', Stored});
@@ -30,8 +32,16 @@ const Moment = require('moment');
             return response.status(200).send({Message: 'Lista Encontrada', TrabajoOrdenes: Response});
         })
     }
-
+    function Editar(request, response) {
+        const Params = request.body;
+        TrabajoOrden.findByIdAndUpdate(Params._id, Params, {new: true}, (Error, Updated) => {
+            if (Error) return response.status(500).send({Message: 'Error al Editar el trabajo de la Orden', Error});
+            if (!Updated) return response.status(404).send({Message: 'No se Edito el Trabajo de la Orden'});
+            return response.status(200).send({Message: 'Trabajo de la Orden Editado Correctamente!...', TrabajoOrden: Updated});
+        })
+    }
     module.exports = {
         Crear,
-        Leer
+        Leer,
+        Editar
     }

@@ -1,13 +1,13 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { OrdenCombustibleService } from '../../../services/ordenCombustible.service';
-import { UserOptions } from "jspdf-autotable";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { VehiculoService } from '../../../services/vehiculo.service';
 import { OrdenCombustibleModel } from '../../../models/ordenCombustible.model';
 import { EmpleadoService } from '../../../services/empleado.service';
 import { IvaService } from '../../../services/iva.service';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { UserOptions } from "jspdf-autotable";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 
 interface jsPDFWithPlugin extends jsPDF {
@@ -45,6 +45,8 @@ export class CombustibleComponent implements OnInit {
 
   public newOrdenCombustible: OrdenCombustibleModel;
 
+  public isUser: boolean = false;
+
   constructor(
     private _OrdenCombustibleService: OrdenCombustibleService,
     private _vehiculoService: VehiculoService,
@@ -54,6 +56,29 @@ export class CombustibleComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private decimalPipe: DecimalPipe
   ) {
+    let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+    if ( usuario != undefined) {
+      switch (usuario.Empleado.Cargo) {
+        case 'Director Provincial':
+          this.isUser = true;
+          break;
+        case 'Secretario/a':
+          this.isUser = true;
+          break;
+        case 'Conductor':
+          this.isUser = true;
+          break;
+        case 'Administrador':
+          this.isUser = true;
+          break;
+        case 'Super Usuario':
+          this.isUser = true;
+          break;
+        default:
+          this.isUser = false;
+          break;
+      }
+    }
     this.initNewOrdenCombustible();
     this.loadVehiculos();
     this.loadEmpleados();
@@ -410,7 +435,7 @@ export class CombustibleComponent implements OnInit {
     const BodyOptions: any = {
       align: 'left'
     }
-    let subtitulo = 'Orden de Combustible No.: '+Object.Numero + '. En la Fecha: ' + this.datePipe.transform(Object.Fecha, 'd, MMMM, yyyy h:mm a');
+    let subtitulo = 'Orden de Combustible No.: '+Object.Numero + '. De la Fecha: ' + this.datePipe.transform(Object.Fecha, 'd, MMMM, yyyy h:mm a');
     doc.setFont('Helvetica', '', 'normal');
     doc.setFontSize(11);
     doc.text(subtitulo, 30, 79, BodyOptions);
@@ -419,42 +444,24 @@ export class CombustibleComponent implements OnInit {
       top: 80
     };
     let body = [
-      ['']
+      ['Responsable: ', Object.Responsable.Ci + ' - ' + Object.Responsable.Nombres + ' ' + Object.Responsable.Apellidos + '. ' + Object.Responsable.Cargo + '.'],
+      ['Vehículo: ', Object.Vehiculo.Placa + ' - ' + Object.Vehiculo.Marca + ' ' + Object.Vehiculo.Modelo + ' ' + Object.Vehiculo.Anio],
+      ['Tipo de Combustible: ', Object.Combustible],
+      ['Motivo: ', Object.Motivo],
+      ['Cantidad: ', Object.Cantidad],
+      ['Valor: ', this.currencyPipe.transform(Object.Valor) + ' (' + Object.IVA.Valor + '%).']
     ];
-
-    // for (const Combustible of this.Combustibles) {
-    //   body.push([
-    //     Combustible.Numero, 
-    //     this.datePipe.transform(Combustible.Fecha, 'd, MMMM, yyyy h:mm a'),
-    //     Combustible.Responsable.Ci + ' - ' + Combustible.Responsable.Nombres + ' ' + Combustible.Responsable.Apellidos + '. ' + Combustible.Responsable.Cargo + '.',
-    //     Combustible.Vehiculo.Placa + ' - ' + Combustible.Vehiculo.Marca + ' ' + Combustible.Vehiculo.Modelo + ' ' + Combustible.Vehiculo.Anio,
-    //     Combustible.Combustible,
-    //     Combustible.Motivo,
-    //     this.decimalPipe.transform(Combustible.Cantidad),
-    //     this.currencyPipe.transform(Combustible.Valor) + ' ('+Combustible.IVA.Valor+'%.)'
-    //     // Combustible.Ci, Combustible.Nombres + ' ' + Combustible.Apellidos, Combustible.Cargo, Combustible.Area, this.datePipe.transform((Combustible.Created.At * 1000), 'd, MMMM, yyyy. h:mm a')
-    //     // ''+vehiculo.Marca, ''+vehiculo.Modelo, ''+vehiculo.Anio, ''+vehiculo.Placa, ''+vehiculo.Matricula, this.currencyPipe.transform(vehiculo.Costo, 'US$')
-    //   ])
-    // }
-    // doc.autoTable({
-    //   head: [['Número', 'Fecha', 'Responsable', 'Vehículo', 'Combustible', 'Motivo', 'Cantidad', 'Valor']],
-    //   body: body,
-    //   startY: 86,
-    //   pageBreak: 'auto',
-    //   margin: margin
-    // })
+    doc.autoTable({
+      body: body,
+      startY: 96,
+      pageBreak: 'auto',
+      margin: margin
+    })
 
     let identity = JSON.parse(localStorage.getItem('Identity'));
     let Cedula = identity.Empleado.Ci;
     let Nombres = identity.Empleado.Nombres + ' ' + identity.Empleado.Apellidos;
     let Cargo = identity.Empleado.Cargo;
-
-    // doc.setPage(doc.getNumberOfPages());
-    // doc.internal.pageSize.height = lastPageHeight;
-    // doc.setFont('Helvetica', '', 'normal');
-    // doc.setFontSize(14);
-    // doc.text("DIRECCIÓN PROVINCIAL DEL AMBIENTE DE PASTAZA", 223, doc.internal.pageSize.height -50, titleOptions);
-
     // Fin del Documento 
 
     for (let i = 1; i <= doc.getNumberOfPages(); i++) {

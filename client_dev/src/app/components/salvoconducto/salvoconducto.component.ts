@@ -71,6 +71,7 @@ export class SalvoconductoComponent implements OnInit {
   public BufferSalvoconductos: any[] = [];
   public BufferSalvoconductosFiltered: any[] = [];
 
+  public isUser: boolean = false;
   constructor(
     private _SalvoConductoService: SalvoConductoService,
     private _EmpleadoService: EmpleadoService,
@@ -79,6 +80,29 @@ export class SalvoconductoComponent implements OnInit {
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe
   ) { 
+    let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+    if ( usuario != undefined) {
+      switch (usuario.Empleado.Cargo) {
+        case 'Director Provincial':
+          this.isUser = true;
+          break;
+        case 'Secretario/a':
+          this.isUser = true;
+          break;
+        case 'Conductor':
+          this.isUser = true;
+          break;
+        case 'Administrador':
+          this.isUser = true;
+          break;
+        case 'Super Usuario':
+          this.isUser = true;
+          break;
+        default:
+          this.isUser = false;
+          break;
+      }
+    }
     this.initNewSalvoConducto();
     this.loadEmpleados();
     this.loadVehiculos();

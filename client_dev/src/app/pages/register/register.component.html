@@ -5,43 +5,64 @@
                 <i class="fa fa-registered" aria-hidden="true"></i>
             </div>
             <div class="card-body text-center pb-1">
-                <h2>Register member</h2>
-                <a routerLink="/login" class="transition">Already have an account? Sign in!</a>
+                <h2>Regístrate</h2>
+                <a routerLink="/login" class="transition">¿Ya tienes una Cuenta?. ¡Inicia Sesión Ahora!</a>
 
                 <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="text-left mt-4">
                     <div class="form-group">
-                        <input [formControl]="name" class="form-control validation-field" placeholder="Full Name" type="text"> 
-                        <small class="text-danger" *ngIf="form.get('name').touched">
-                            <span *ngIf="form.get('name').hasError('required')">Full Name is required</span>
-                            <span *ngIf="form.get('name').hasError('minlength')">Minimum of 3 characters</span>
+                        <input [formControl]="Ci" class="form-control validation-field" placeholder="Cédula de Identidad" type="text"> 
+                        <small class="text-danger" *ngIf="form.get('Ci').touched">
+                            <span *ngIf="form.get('Ci').hasError('required')">Cédula de Identidad Requerida!</span>
+                            <span *ngIf="form.get('Ci').hasError('invalidCi')">Cédula Erronea</span>
                         </small>       
                     </div>
                     <div class="form-group">
-                        <input [formControl]="email" class="form-control validation-field" placeholder="Email" type="text"> 
-                        <small class="text-danger" *ngIf="form.get('email').touched">
-                            <span *ngIf="form.get('email').hasError('required')">Email is required</span>
-                            <span *ngIf="form.get('email').hasError('invalidEmail')">Invalid email address</span>
+                        <input [formControl]="Nombres" class="form-control validation-field" placeholder="Nombres Completos" type="text"> 
+                        <small class="text-danger" *ngIf="form.get('Nombres').touched">
+                            <span *ngIf="form.get('Nombres').hasError('required')">Nombres Requeridos!</span>
+                            <span *ngIf="form.get('Nombres').hasError('minlength')">Al menos 3 Caracteres</span>
+                        </small>       
+                    </div>
+                    <div class="form-group">
+                        <input [formControl]="Apellidos" class="form-control validation-field" placeholder="Apellidos Completos" type="text"> 
+                        <small class="text-danger" *ngIf="form.get('Apellidos').touched">
+                            <span *ngIf="form.get('Apellidos').hasError('required')">Apellidos Requeridos!</span>
+                            <span *ngIf="form.get('Apellidos').hasError('invalidPhone')">Al menos 3 Caracteres</span>
+                        </small>       
+                    </div>
+                    <div class="form-group">
+                        <input [formControl]="Telefono" class="form-control validation-field" placeholder="Teléfono" type="text"> 
+                        <small class="text-danger" *ngIf="form.get('Telefono').touched">
+                            <span *ngIf="form.get('Telefono').hasError('required')">Teléfono Requerido!</span>
+                            <span *ngIf="form.get('Telefono').hasError('wrongPhone')">Al menos 3 Caracteres</span>
+                        </small>       
+                    </div>
+                    <div class="form-group">
+                        <input [formControl]="Correo" class="form-control validation-field" placeholder="Correo Electrónico" type="text"> 
+                        <small class="text-danger" *ngIf="form.get('Correo').touched">
+                            <span *ngIf="form.get('Correo').hasError('required')">Correo Electrónico Requerido!</span>
+                            <span *ngIf="form.get('Correo').hasError('invalidEmail')">Correo Electrónico Incorrecto</span>
                         </small> 
                     </div>
                     <div class="form-group">
-                        <input [formControl]="password" class="form-control validation-field" placeholder="Password" type="password" minlength="6">
-                         <small class="text-danger" *ngIf="form.get('password').touched">
-                            <span *ngIf="form.get('password').hasError('required')">Password is required</span>
-                            <span *ngIf="form.get('password').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+                        <input [formControl]="Contrase" class="form-control validation-field" placeholder="Contraseña" type="password" minlength="6">
+                         <small class="text-danger" *ngIf="form.get('Contrase').touched">
+                            <span *ngIf="form.get('Contrase').hasError('required')">Contraseña Requerida</span>
+                            <span *ngIf="form.get('Contrase').hasError('minlength')">Contraseña muy corta, al menos 6 Caracteres</span>
                         </small>                     
                     </div>
                     <div class="form-group">
-                        <input [formControl]="confirmPassword" class="form-control validation-field" placeholder="Confirm Password" type="password">
-                        <small class="text-danger" *ngIf="form.get('confirmPassword').touched">
-                            <span *ngIf="form.get('confirmPassword').hasError('required')">Confirm Password is required</span>
-                            <span *ngIf="form.get('confirmPassword').hasError('mismatchedPasswords')">Passwords do not match</span>
+                        <input [formControl]="ConfirmContrase" class="form-control validation-field" placeholder="Confirmar la Contraseña" type="password">
+                        <small class="text-danger" *ngIf="form.get('ConfirmContrase').touched">
+                            <span *ngIf="form.get('ConfirmContrase').hasError('required')">SE necesita Confirmar la Contraseña</span>
+                            <span *ngIf="form.get('ConfirmContrase').hasError('mismatchedPasswords')">Las Contraseñas no Coinciden</span>
                         </small> 
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <p class="terms">By creating an account, you agree our <a class="transition terms" href="javascript:void(0);">Terms & Privacy Policy</a></p>                  
-                    </div>             
+                    </div>              -->
                     <div class="form-group">
-                        <button [disabled]="!form.valid" class="btn btn-block" type="submit">Sign up</button>
+                        <button [disabled]="!form.valid" class="btn btn-block" type="submit">Registrarse</button>
                     </div>
                 </form>  
             </div>

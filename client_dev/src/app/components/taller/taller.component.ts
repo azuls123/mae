@@ -29,9 +29,33 @@ export class TallerComponent implements OnInit {
     currentPage: 1
   }
   public viewedTaller;
+  public isUser: boolean = false;
   constructor(private _TallerService: TallerService,
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe) {
+      let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+      if ( usuario != undefined) {
+        switch (usuario.Empleado.Cargo) {
+          case 'Director Provincial':
+            this.isUser = true;
+            break;
+          case 'Secretario/a':
+            this.isUser = true;
+            break;
+          case 'Conductor':
+            this.isUser = true;
+            break;
+          case 'Administrador':
+            this.isUser = true;
+            break;
+          case 'Super Usuario':
+            this.isUser = true;
+            break;
+          default:
+            this.isUser = false;
+            break;
+        }
+      }
     this.initNewTaller();
     this.loadTalleres();
   }

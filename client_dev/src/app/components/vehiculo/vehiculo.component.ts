@@ -50,12 +50,36 @@ export class VehiculoComponent implements OnInit {
 
   public CiResponsable;
 
+  public isUser: boolean = false;
   constructor(
     private _VehiculoService: VehiculoService,
     private _EmpleadoService: EmpleadoService,
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe
   ) {
+    let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+    if ( usuario != undefined) {
+      switch (usuario.Empleado.Cargo) {
+        case 'Director Provincial':
+          this.isUser = true;
+          break;
+        case 'Secretario/a':
+          this.isUser = true;
+          break;
+        case 'Conductor':
+          this.isUser = true;
+          break;
+        case 'Administrador':
+          this.isUser = true;
+          break;
+        case 'Super Usuario':
+          this.isUser = true;
+          break;
+        default:
+          this.isUser = false;
+          break;
+      }
+    }
     this.initNewVehiculo();
     this.loadCarBrands();
     this.loadVehiculos();

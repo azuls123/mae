@@ -77,6 +77,30 @@ const JWT = require('../services/jwt');
             return response.status(403).send({Message: 'Las Contraseñas no coinciden'})
         }
     }
+    function UpdateMyPassword(request, response) {
+        const Update = request.body;
+        if (Update.Anterior && Update.Anterior != '' && Update.Contrase && Update.Contrase != '' && Update.Contrase == Update.Confirmar) {
+    
+            Usuario.findById(Update._id).exec((error, usuario) => {
+                if (error) return response.status(500).send({ Message: 'No se Encontró el Usuario' });
+                Bcrypt.compare(Update.Anterior, usuario.Contrase, (ErrorContrase, check) => {
+                    if (ErrorContrase) return response.status(500).send({ Message: 'La contraseña Anterior no Coincide' });
+                    Bcrypt.hash(Update.Contrase, null, null, (error, CryptedPassword) => {
+                        if (error) return response.status(500).send({ Message: 'Error al encriptar la contraseña' });
+                        if (CryptedPassword) usuario.Contrase = CryptedPassword;
+                        Usuario.findByIdAndUpdate(usuario._id, usuario, { new: true }, (Error, Updated) => {
+                            if (Error) return response.status(500).send({ Message: 'Error al Cambiar la Contraseña', Error });
+                            if (!Updated || Updated == null) return response.status(404).send({ Message: 'No se ha podido Cambiar la Contraseña' })
+                            return response.status(200).send({ Message: 'Cambio de contraseña Exitoso', Usuario: Updated });
+                        })
+                    })
+                })
+            })
+    
+        } else {
+            return response.status(404).send({ Message: 'Faltan Campos!!' });
+        }
+    }
 
     function Login(request, response) {
         const Params = request.body;
@@ -119,6 +143,7 @@ module.exports = {
     Leer,
     Editar,
     Login,
-    UpdatePassword
+    UpdatePassword,
+    UpdateMyPassword
 }
     

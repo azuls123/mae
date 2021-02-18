@@ -30,7 +30,7 @@ Editar(Object) : Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     .set('Authorization', this.Token);
 
-    return this._Http.put(this.url + 'editar/' + Object._id, params, {headers});
+    return this._Http.put(this.url + 'editar', params, {headers});
 }
 // test(): Observable<any> {
 //     const headers = new HttpHeaders().set('Content-Type', 'application/json')

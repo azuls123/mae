@@ -45,12 +45,36 @@ export class UsuarioComponent implements OnInit {
 
   public viewedUsuario;
 
+  public isUser: boolean = false;
   constructor(
     private _UsuarioService: UsuarioService,
     private _empleadoService: EmpleadoService,
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe
   ) {
+    let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+    if ( usuario != undefined) {
+      switch (usuario.Empleado.Cargo) {
+        case 'Director Provincial':
+          this.isUser = true;
+          break;
+        case 'Secretario/a':
+          this.isUser = true;
+          break;
+        case 'Conductor':
+          this.isUser = true;
+          break;
+        case 'Administrador':
+          this.isUser = true;
+          break;
+        case 'Super Usuario':
+          this.isUser = true;
+          break;
+        default:
+          this.isUser = false;
+          break;
+      }
+    }
     this.initNewUsuario();
     this.loadEmpleados();
     this.initEmpleado();

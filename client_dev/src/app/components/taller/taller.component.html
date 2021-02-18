@@ -1,5 +1,5 @@
 <div class="col-lg-12 row">
-  <div class="col-md-5">
+  <div *ngIf="isUser" class="col-md-5">
     <div widget class="card border-0 box-shadow">
       <div class="card-header transparent border-0 text-muted">
         <h5 *ngIf="!newTaller._id" class="mb-0">Ingreso de Talleres</h5>
@@ -56,7 +56,6 @@
         </div>
       </div>
       <div class="card-body widget-body bg-light">
-        <div class="row">
           <div class="input-group mb-2">
             <div class="input-group-prepend">
               <span class="input-group-text bg-transparent border-0">
@@ -81,7 +80,6 @@
               </div>
             </div>
           </div>
-        </div>
         <table class="table table-responsive-sm table-striped table-sm table-bordered table-hover"   data-toggle="modal"
         data-target="#taller-modal">
           <thead>
@@ -125,7 +123,7 @@
           <i class="fa fa-info"></i> Informaci&oacute;n del Taller {{viewedTaller.Nombre}}
         </h4>
         <button class="close" data-dismiss="modal" aria-label="Cerrar"><span class=""
-            aria-hidden="true"></span></button>
+            aria-hidden="true">×</span></button>
       </div>
       <div class="modal-body row pl-5 pr-5">
         <label for="" class="label-form col-md-4"> RUC: </label>
@@ -135,7 +133,7 @@
         <label for="" class="label-form col-md-4"> Dirección:</label>
         <span class="col-md-8"> {{viewedTaller.Direccion}} </span>
       </div>
-      <div class="modal-footer">
+      <div *ngIf="isUser" class="modal-footer">
         <div class="col-12">
           <button class="btn btn-primary pull-left" (click)="newTaller = viewedTaller;" data-dismiss="modal" aria-label="Editar Taller">
             <i class="fa fa-edit"></i> Editar el Taller

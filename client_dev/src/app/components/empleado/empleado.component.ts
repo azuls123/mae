@@ -31,6 +31,7 @@ export class EmpleadoComponent implements OnInit {
     'Secretario',
     'Indefinido'
   ]
+  public isUser: boolean = false;
 
   public newEmpleado: EmpleadoModel;
   public Empleados: any[] = [];
@@ -42,6 +43,29 @@ export class EmpleadoComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe
   ) {
+    let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+    if ( usuario != undefined) {
+      switch (usuario.Empleado.Cargo) {
+        case 'Director Provincial':
+          this.isUser = true;
+          break;
+        case 'Secretario/a':
+          this.isUser = true;
+          break;
+        case 'Conductor':
+          this.isUser = true;
+          break;
+        case 'Administrador':
+          this.isUser = true;
+          break;
+        case 'Super Usuario':
+          this.isUser = true;
+          break;
+        default:
+          this.isUser = false;
+          break;
+      }
+    }
     this.initEmpleado();
     this.loadEmpleados();
   }

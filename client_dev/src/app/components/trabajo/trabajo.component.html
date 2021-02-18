@@ -1,5 +1,5 @@
 <div class="col-lg-12 row">
-  <div class="col-md-5">
+  <div *ngIf="isUser" class="col-md-5">
     <div widget class="card border-0 box-shadow">
       <div class="card-header transparent border-0 text-muted">
         <h5 class="mb-0">
@@ -61,17 +61,21 @@
             <span class="input-group-text bg-transparent border-0">
               <i class="fa fa-search ml-2 mr-1"></i>
             </span>
-            <input type="text" (keyup)="defineTrabajo()" (change)="defineTrabajo()" class="form-control" id="searchTextTrabajo" name="searchTextTrabajo" [(ngModel)]="searchTextTrabajo">
-            <div class="btn-group">
-              <button typeEmpleado="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
-                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'todo'" >Todo</a>
-                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'tipo'" >Tipo</a>
-                <a href="javascript:void(0);" class="dropdown-item" (click)="defineTrabajo(); typeTrabajo = 'descripcion'" >Descripción</a>
-              </div>
+          </div>
+          <input type="text" (keyup)="defineTrabajo()" (change)="defineTrabajo()" class="form-control"
+            id="searchTextTrabajo" name="searchTextTrabajo" [(ngModel)]="searchTextTrabajo">
+          <div class="btn-group">
+            <button typeEmpleado="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+              class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none">
+              <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+              <a href="javascript:void(0);" class="dropdown-item"
+                (click)="defineTrabajo(); typeTrabajo = 'todo'">Todo</a>
+              <a href="javascript:void(0);" class="dropdown-item"
+                (click)="defineTrabajo(); typeTrabajo = 'tipo'">Tipo</a>
+              <a href="javascript:void(0);" class="dropdown-item"
+                (click)="defineTrabajo(); typeTrabajo = 'descripcion'">Descripción</a>
             </div>
           </div>
         </div>
@@ -83,15 +87,15 @@
             </tr>
           </thead>
           <tbody class="selectable">
-            <tr *ngFor="let trabajo of Trabajos" (click)="viewedTrabajo = trabajo" [class.bg-deleted]="!trabajo.Activo"  data-toggle="modal"
-            data-target="#info-modal">
+            <tr *ngFor="let trabajo of Trabajos" (click)="viewedTrabajo = trabajo" [class.bg-deleted]="!trabajo.Activo"
+              data-toggle="modal" data-target="#info-modal">
               <td> {{trabajo.Tipo}} </td>
               <td> {{trabajo.Descripcion}} </td>
             </tr>
           </tbody>
         </table>
       </div>
-      
+
       <div class="card-footer">
         <!-- <img src="/src/assets/img/logos/mae16-9.png" alt=""> -->
         <button class="btn btn-info pull-right" (click)="getPdf()">
@@ -103,7 +107,8 @@
 </div>
 
 
-<div class="modal fade" *ngIf="viewedTrabajo" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+<div class="modal fade" *ngIf="viewedTrabajo" id="info-modal" tabindex="-1" role="dialog"
+  aria-labelledby="modal-info-label">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header sate modal-info">
@@ -113,7 +118,7 @@
       <div class="modal-body">
         {{viewedTrabajo.Descripcion}}
       </div>
-      <div class="modal-footer">
+      <div  *ngIf="isUser" class="modal-footer">
         <div class="col-12">
           <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
             (click)="NewTrabajo = viewedTrabajo">

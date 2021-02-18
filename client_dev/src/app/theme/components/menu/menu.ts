@@ -14,9 +14,9 @@ function setMenu(): Menu[] {
     Menus.push(new Menu(16, 'Gestión de Impuestos', '/iva', null, 'fas', 'tachometer-alt', null, false, 10));
     Menus.push(new Menu(20, 'Gestión de Documentos', null , null, 'fa', 'id-badge', null, true, 0));
     Menus.push(new Menu(22, 'Gestión de Salvoconducto', '/salvo-conducto', null, 'fas', 'route', null, false, 20));
-    Menus.push(new Menu(23, 'Informe Diario', '/informe-diario', null, 'far', 'folder', null, false, 20));
+    Menus.push(new Menu(23, 'Informe General', '/informe-general', null, 'far', 'folder', null, false, 20));
     Menus.push(new Menu(24, 'Orden de Trabajo', '/orden-trabajo', null, 'fas', 'file-invoice', null, false, 20));
-    Menus.push(new Menu(25, 'Ficha Técnica', '/ficha-tecnica', null, 'fas', 'file-alt', null, false, 20));
+    // Menus.push(new Menu(25, 'Ficha Técnica', '/ficha-tecnica', null, 'fas', 'file-alt', null, false, 20));
     Menus.push(new Menu(26, 'Combustible', '/combustible', null, 'fas', 'gas-pump', null, false, 20));
     // Menus.push(new Menu(40, 'Recorrido', '/recorrido', null, 'fa', 'road', null, false, 0));
     // Menus.push(new Menu(100, 'Estado de Recepcion', '/estado-recepcion', null, 'far', 'calendar-check', null, false, 0));

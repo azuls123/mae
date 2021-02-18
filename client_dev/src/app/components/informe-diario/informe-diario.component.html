@@ -15,11 +15,10 @@
       </div>
       <div class="card-body widget-body bg-light">
         <form action="" class="row p-2">
-          <div class="col-md-2">
-            <label for="" class="">
+            <label for="" class="label-form col-2">
               <strong>Vehículo:</strong>
             </label>
-            <div class="form-group">
+            <div class="form-group col-2">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
@@ -37,8 +36,20 @@
                 </button> -->
               </div>
             </div>
-          </div>
-          <div class="col-md-2">
+            <div class="form-group col-8">
+                <div class="form-control">
+                  <ng-container *ngIf="Vehiculo; else vehiculoTemplate">
+                    {{Vehiculo.Marca}}
+                    {{Vehiculo.Modelo}} del
+                    {{Vehiculo.Anio}} con Combustible: 
+                    {{Vehiculo.Combustible}}
+                  </ng-container>
+                  <ng-template #vehiculoTemplate>
+                    Seleccionar un Vehículo                
+                  </ng-template>
+                </div>
+            </div>
+          <!-- <div class="col-md-2">
             <label for="">
               <strong>Mes del Informe:</strong>
             </label>
@@ -66,33 +77,19 @@
                 </datalist>
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <label for="">
-              <strong>Combustible:</strong>
-            </label>
-            <div class="form-group">
-              <span *ngIf="Vehiculo" class="form-control">
-                {{Vehiculo.Combustible}}
-              </span>
-              <span *ngIf="!Vehiculo" class="form-control">
-                Seleccionar Vehículo
-              </span>
-            </div>
-          </div>
-          <div class="col-md-5">
-            <label for="">
-              <strong>Responsable del Vehículo: </strong>
-            </label>
-            <div class="form-group">
-              <span *ngIf="!Vehiculo" class="form-control">
-                Seleccionar Vehículo
-              </span>
-              <span *ngIf="Vehiculo" class="form-control">
-                {{Vehiculo.Responsable.Ci + ' - ' + Vehiculo.Responsable.Nombres + ' ' +
-                Vehiculo.Responsable.Apellidos}}
-              </span>
-            </div>
+          </div> -->
+
+          <label for="" class="label-form col-2 pr-0">
+            <strong>Responsable del Vehículo:</strong>
+          </label>
+          <div class="form-group col-10">
+            <span *ngIf="!Vehiculo" class="form-control">
+              Seleccionar un Vehículo
+            </span>
+            <span *ngIf="Vehiculo" class="form-control">
+              {{Vehiculo.Responsable.Ci + ' - ' + Vehiculo.Responsable.Nombres + ' ' +
+              Vehiculo.Responsable.Apellidos}}
+            </span>
           </div>
           <div class="content row col-12 mt-0">
             <hr class="col-12">
@@ -100,60 +97,140 @@
           <span class="col-12" *ngIf="Salvos && Salvos.length >= 1">
             <strong>Total de Kilometraje Recorrido:</strong> {{KmRecorrido}}
           </span>
-          <table *ngIf="Salvos && Salvos.length >= 1" class="col-md-12 table-sm table-responsive-sm table-hover table-striped table-bordered">
+          <table *ngIf="Salvos && Salvos.length >= 1"
+            class="col-md-12 mb-2 table-sm table-responsive-sm table-hover table-striped table-bordered">
             <thead>
               <tr>
-                <!-- <th class="p-0 text-center" rowspan="2">Fecha</th> -->
-                <th class="p-0 text-center" colspan="2">Fecha</th>
-                <th class="p-0 text-center" rowspan="2">Conductor</th>
-                <th class="p-0 text-center" colspan="3">Lectura de Kilometrake</th>
-                <th class="p-0 text-center" colspan="2">Combustible</th>
-                <th class="p-0 text-center" rowspan="2">Descripción del Recorrido</th>
-                <th class="p-0 text-center" colspan="2">Utilizado Por</th>
-              </tr>
-              <tr>
-                <th class="p-0 text-center">Salida</th>
-                <th class="p-0 text-center">Retorno</th>
-                <th class="p-0 text-center">Inicial</th>
-                <th class="p-0 text-center">Final</th>
-                <th class="p-0 text-center">Recorridos</th>
-                <th class="p-0 text-center">Galones</th>
-                <th class="p-0 text-center">Totales</th>
-                <th class="p-0 text-center">No.</th>
-                <th class="p-0 text-center">Estado</th>
+                <th>No. Salvoconducto</th>
+                <th>Fecha</th>
+                <th>Conductor</th>
+                <th>Kilometraje</th>
+                <th>Ruta</th>
+                <th>Estado</th>
               </tr>
             </thead>
             <tbody>
               <tr class="selectable" *ngFor="let salvo of Salvos">
-                <!-- <td> {{salvo.Emision.Fecha | date: 'dd MMMM yyyy'}} </td> -->
-                <td> {{salvo.Fecha.Salida | date: 'medium'}} </td>
-                <td> {{salvo.Fecha.Estimada | date: 'medium'}} </td>
-                <td> {{salvo.Conductor.Ci + ' ' + salvo.Conductor.Nombres + ' ' + salvo.Conductor.Apellidos}} </td>
-                <td> {{salvo.KmInicial}} </td>
-                <td> {{salvo.Recorrido + salvo.KmInicial}} </td>
-                <td> {{salvo.Recorrido}} </td>
-                <td class="text-danger"> {{ 0 }} </td>
-                <td class="text-danger"> {{ 0 }} </td>
-                <td> {{ 'Desde: ' + salvo.Lugar.Origen + ', Hasta: ' + salvo.Lugar.Destino}} </td>
                 <td> {{salvo.Numero}} </td>
+                <td> Salida: {{salvo.Fecha.Salida | date: 'd, MMMM, yyyy h:mm a'}}. Retorno:  {{salvo.Fecha.Estimada | date: 'd, MMMM, yyyy h:mm a'}} </td>
+                <td> {{salvo.Conductor.Ci + ' - ' + salvo.Conductor.Nombres + ' ' + salvo.Conductor.Apellidos}} </td>
+                <td> Inicio: {{salvo.KmInicial | number}} km. Final: {{(salvo.Recorrido + salvo.KmInicial) | number}} km. Recorrido: {{salvo.Recorrido}} km.</td>
+                <td> {{ 'Desde: ' + salvo.Lugar.Origen + ', Hasta: ' + salvo.Lugar.Destino}} </td>
                 <td> {{salvo.Estado}} </td>
+              </tr>
+              <tr></tr>
+            </tbody>
+          </table>
+          <div *ngIf="Salvos && Salvos.length >= 1" class="content row col-12 mt-0">
+            <hr class="col-12">
+          </div>
+          <table *ngIf="OrdenCombustibles && OrdenCombustibles.length >= 1"class="col-md-12 mb-2 table-sm table-responsive-sm table-hover table-striped table-bordered">
+            <thead>
+              <tr>
+                <th class="p-0 text-center" >No. Ord. Combustible</th>
+                <th class="p-0 text-center" >Fecha</th>
+                <th class="p-0 text-center" >Responsable</th>
+                <th class="p-0 text-center" >Motivo</th>
+                <th class="p-0 text-center" >Cantidad</th>
+                <th class="p-0 text-center" >Costo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let Combustible of OrdenCombustibles">
+                <td>
+                  {{Combustible.Numero}}
+                </td>
+                <td>
+                  {{Combustible.Fecha | date: 'd MMMM yyyy h:mm a'}}
+                </td>
+                <td>
+                  {{Combustible.Responsable.Ci + ' - ' + Combustible.Responsable.Nombres + ' ' +
+                  Combustible.Responsable.Apellidos }}
+                </td>
+                <td>
+                  {{Combustible.Motivo}}
+                </td>
+                <td>
+                  {{Combustible.Cantidad | number}}
+                </td>
+                <td>
+                  {{Combustible.Valor | currency}}
+                </td>
+              </tr>
+              <tr></tr>
+            </tbody>
+          </table>
+          <div *ngIf="OrdenCombustibles && OrdenCombustibles.length >= 1" class="content row col-12 mt-0">
+            <hr class="col-12">
+          </div>
+          <table *ngIf="OrdenTrabajos && OrdenTrabajos.length >= 1"class="col-md-12 mb-2 table-sm table-responsive-sm table-hover table-striped table-bordered">
+            <thead>
+              <tr>
+                <th class="p-0 text-center" >No. Ord. Trabajo</th>
+                <th class="p-0 text-center" >Fecha</th>
+                <th class="p-0 text-center" >Solicitante</th>
+                <th class="p-0 text-center" >Taller</th>
+                <th class="p-0 text-center" >Estado</th>
+                <th class="p-0 text-center" >Costo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let orden of OrdenTrabajos">
+                <td> {{ orden.Numero}} </td>
+                <td> {{ (orden.Created.At | amFromUnix) | date: 'd, MMMM, yyyy h:mm a'}} </td>
+                <td> {{ orden.Solicitante.Ci + ' - ' + orden.Solicitante.Nombres + ' ' + orden.Solicitante.Apellidos}}
+                </td>
+                <td> {{ orden.Taller.Nombre + ' ' + orden.Taller.RUC}} </td>
+                <td>
+                  {{orden.Estado}}
+                </td>
+                <td>
+                  {{orden.Total | currency}}
+                </td>
               </tr>
             </tbody>
           </table>
-          
-        <div *ngIf="!Salvos || Salvos.length < 1" role="alert" class="alert alert-dismissible fade show"
-        [class.alert-danger]="Vehiculo" [class.alert-warning]="!Vehiculo">
-        <button type="button" data-dismiss="alert" aria-label="Close" class="close">
-          <span aria-hidden="true">×</span>
-        </button>
-        <span *ngIf="!Vehiculo">
-          <strong>Seleccionar Vehículo!</strong> Para generar el Registro de Informe General Vehícular, Buscar una Placa Válida en el campo Vehículo.
-        </span>
-        <span *ngIf="Vehiculo">
-          <strong>Sin Registros!</strong> Al parecer no se han Registrado Salvoconductos de este Vehículo
-        </span>
-      </div>
+          <div *ngIf="OrdenTrabajos && OrdenTrabajos.length >= 1"  class="content row col-12 mt-0">
+            <hr class="col-12">
+          </div>
+
+          <div class="col-12">
+            <table *ngIf="Vehiculo" class="table col-3 table-sm table-striped table-bordered table-responsive-sm pull-right">
+              <tbody>
+                <tr>
+                  <th>
+                    Subtotal:
+                  </th>
+                  <td>
+                    {{subtotal | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Iva:
+                  </th>
+                  <td>
+                    {{subIva | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Total:
+                  </th>
+                  <td>
+                    {{total | currency}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </form>
+        <div class="col-12">
+          <button class="btn btn-success pull-right" (click)="getPdf();" *ngIf="Vehiculo">
+            <i class="fas fa-file-pdf"></i>
+            Generar Reporte
+          </button>
+        </div>
       </div>
     </div>
   </div>

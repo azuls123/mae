@@ -38,10 +38,10 @@ export const routes: Routes = [
       { path: 'trabajo',          component: TrabajoComponent,   data: { breadcrumb: 'Trabajo'}  },         
       { path: 'salvo-conducto',   component: SalvoconductoComponent,   data: { breadcrumb: 'Salvo Conductos y Movilizaciones'}  },         
       { path: 'orden-trabajo',    component: OrdentrabajoComponent,   data: { breadcrumb: 'Orden de Trabajo'}  },         
-      { path: 'ficha-tecnica',    component: FichatecnicaComponent,   data: { breadcrumb: 'Ficha Técnica'}  },         
+      // { path: 'ficha-tecnica',    component: FichatecnicaComponent,   data: { breadcrumb: 'Ficha Técnica'}  },         
       { path: 'estado-recepcion', component: EstadorecepcionComponent,   data: { breadcrumb: 'Estado de Recepcion'}  },         
       { path: 'taller',           component: TallerComponent,   data: { breadcrumb: 'Administración de Talleres'}  },         
-      { path: 'informe-diario',   component: InformeDiarioComponent,   data: { breadcrumb: 'Informe Diario'}  },         
+      { path: 'informe-general',   component: InformeDiarioComponent,   data: { breadcrumb: 'Informe General por Vehículo'}  },         
       { path: 'combustible',   component: CombustibleComponent,   data: { breadcrumb: 'Informe de Repostaje'}  },         
       { path: 'iva',   component: IvaComponent,   data: { breadcrumb: 'Asigación de IVA'}  },         
     ]

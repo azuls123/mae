@@ -30,9 +30,33 @@ export class TrabajoComponent implements OnInit {
   public searchTitleTrabajo: string = 'Buscando Todo';
   public searchTextTrabajo: string = '';
 
+  public isUser: boolean = false;
   constructor(private _TrabajoService: TrabajoService,
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe) {
+      let usuario: any = JSON.parse(localStorage.getItem('Identity'));
+      if ( usuario != undefined) {
+        switch (usuario.Empleado.Cargo) {
+          case 'Director Provincial':
+            this.isUser = true;
+            break;
+          case 'Secretario/a':
+            this.isUser = true;
+            break;
+          case 'Conductor':
+            this.isUser = true;
+            break;
+          case 'Administrador':
+            this.isUser = true;
+            break;
+          case 'Super Usuario':
+            this.isUser = true;
+            break;
+          default:
+            this.isUser = false;
+            break;
+        }
+      }
     this.initNewTrabajo();
     this.loadTrabajos();
   }

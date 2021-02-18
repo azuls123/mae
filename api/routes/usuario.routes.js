@@ -11,6 +11,7 @@ const Authenticate = require('../middleware/authenticate');
     Api.get('/leer/:Tipo?',Authenticate.ensureAuth , Controller.Leer);
     Api.put('/editar/:id',Authenticate.ensureAuth , Controller.Editar);
     Api.post('/login', Controller.Login);
+    Api.put('/cambiar-mi-contrase', Authenticate.ensureAuth, Controller.UpdateMyPassword);
     Api.put('/cambiar-contrase/:id', Authenticate.ensureAuth, Controller.UpdatePassword);
 
 module.exports = Api;

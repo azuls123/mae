@@ -1,5 +1,5 @@
 <div class="col-lg-12 row">
-  <div class="col-md-5">
+  <div  *ngIf="isUser" class="col-md-5">
     <div widget class="card border-0 box-shadow">
       <div class="card-header transparent border-0 text-muted">
         <h5 class="mb-0">
@@ -26,30 +26,30 @@
                 <span class="input-group-text bg-transparent border-0">
                   <i class="fa fa-search ml-2 mr-1"></i>
                 </span>
-                <input class="form-control border-0" type="text" id=searchTextEmpleado name=searchTextEmpleado
-                  (change)="defineEmpleado();" (keyup)="defineEmpleado();" [(ngModel)]="searchTextEmpleado"
-                  placeholder="{{searchTitleEmpleado}}">
-                <div class="btn-group">
-                  <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
-                    <a class="dropdown-item" href="javascript:void(0);"
-                      (click)="typeEmpleado = 'todo'; defineEmpleado();">Todo</a>
-                    <!-- <a class="dropdown-item" href="javascript:void(0);"
+              </div>
+              <input class="form-control border-0" type="text" id=searchTextEmpleado name=searchTextEmpleado
+                (change)="defineEmpleado();" (keyup)="defineEmpleado();" [(ngModel)]="searchTextEmpleado"
+                placeholder="{{searchTitleEmpleado}}">
+              <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeEmpleado = 'todo'; defineEmpleado();">Todo</a>
+                  <!-- <a class="dropdown-item" href="javascript:void(0);"
                       (click)="typeEmpleado = 'telefono'; defineEmpleado();">Tel&eacute;fono</a> -->
-                    <a class="dropdown-item" href="javascript:void(0);"
-                      (click)="typeEmpleado = 'nombres'; defineEmpleado();">Nombres</a>
-                    <a class="dropdown-item" href="javascript:void(0);"
-                      (click)="typeEmpleado = 'apellidos'; defineEmpleado();">Apellidos</a>
-                    <a class="dropdown-item" href="javascript:void(0);"
-                      (click)="typeEmpleado = 'cedula'; defineEmpleado();">C&eacute;dula</a>
-                    <!-- <a class="dropdown-item" href="javascript:void(0);"
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeEmpleado = 'nombres'; defineEmpleado();">Nombres</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeEmpleado = 'apellidos'; defineEmpleado();">Apellidos</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeEmpleado = 'cedula'; defineEmpleado();">C&eacute;dula</a>
+                  <!-- <a class="dropdown-item" href="javascript:void(0);"
                       (click)="typeEmpleado = 'cargo'; defineEmpleado();">Cargo</a> -->
-                    <a class="dropdown-item" href="javascript:void(0);"
-                      (click)="typeEmpleado = 'area'; defineEmpleado();">Area</a>
-                  </div>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    (click)="typeEmpleado = 'area'; defineEmpleado();">Area</a>
                 </div>
               </div>
             </div>
@@ -153,11 +153,17 @@
             </div>
             <label for="" class="label-control col-md-4"><strong>Cargo:*</strong></label>
             <div class="input-group col-md-8 mb-2">
-              <select #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo" id="Cargo" class="form-control">
+              <input type="text" class="form-control" #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo" id="Cargo">
+              <datalist> 
+                <option value="Director Provincial">Director Provincial</option>
+                <option value="Secretario/a">Secretario/a</option>
+                <option value="Conductor">Conductor</option>
+              </datalist>
+              <!-- <select #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo" id="Cargo" class="form-control">
                 <option value="Super Usuario">Super Usuario</option>
                 <option value="Administrador">Administrador</option>
                 <option value="Conductor">Conductor</option>
-              </select>
+              </select> -->
             </div>
             <label for="" class="label-form col-md-4"><strong>Area:*</strong></label>
             <div class="input-group col-md-8 mb-2">
@@ -253,32 +259,32 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fa fa-search ml-2 mr-1"></i>
               </span>
-              <input class="form-control border-0 col-12" aria-autocomplete="none" type="text" id=searchTextUsuario
-                name=searchTextUsuario (change)="defineUsuario();" (keyup)="defineUsuario();"
-                [(ngModel)]="searchTextUsuario" placeholder="{{searchTitleUsuario}}">
-              <div class="btn-group">
-                <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'todo'; defineUsuario();">Todo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'telefono'; defineUsuario();">Tel&eacute;fono</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'nombres'; defineUsuario();">Nombres</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'apellidos'; defineUsuario();">Apellidos</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'cedula'; defineUsuario();">C&eacute;dula</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'cargo'; defineUsuario();">Cargo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'correo'; defineUsuario();">Correo</a>
-                  <a class="dropdown-item" href="javascript:void(0);"
-                    (click)="typeUsuario = 'area'; defineUsuario();">Area</a>
-                </div>
+            </div>
+            <input class="form-control border-0 col-12" aria-autocomplete="none" type="text" id=searchTextUsuario
+              name=searchTextUsuario (change)="defineUsuario();" (keyup)="defineUsuario();"
+              [(ngModel)]="searchTextUsuario" placeholder="{{searchTitleUsuario}}">
+            <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle no-caret bg-transparent border-0 box-shadow-none"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right box-shadow rounded-0">
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'todo'; defineUsuario();">Todo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'telefono'; defineUsuario();">Tel&eacute;fono</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'nombres'; defineUsuario();">Nombres</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'apellidos'; defineUsuario();">Apellidos</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'cedula'; defineUsuario();">C&eacute;dula</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'cargo'; defineUsuario();">Cargo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'correo'; defineUsuario();">Correo</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  (click)="typeUsuario = 'area'; defineUsuario();">Area</a>
               </div>
             </div>
           </div>
@@ -362,7 +368,7 @@
           'medium'}}</span>
 
       </div>
-      <div class="modal-footer">
+      <div *ngIf="isUser" class="modal-footer">
         <div class="col-12">
           <button class="btn btn-primary pull-left" data-dismiss="modal" aria-label="Close"
             (click)="newUsuario = viewedUsuario; NewEmpleado = viewedUsuario.Empleado; isNew = true">

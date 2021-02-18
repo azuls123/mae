@@ -49,6 +49,15 @@ export class UsuarioService{
 
         return this._Http.put(this.url + 'cambiar-contrase/' + id, params, {headers});
     }
+    
+    CambiarMiContrase(Object) : Observable<any> {
+        const params = JSON.stringify(Object);
+        // objeto de be contener Anterior, Contrase y Confirmar
+        const headers = new HttpHeaders().set('Content-Type', 'application/json')
+        .set('Authorization', this.Token);
+
+        return this._Http.put(this.url + 'cambiar-mi-contrase', params, {headers});
+    }
     // test(): Observable<any> {
     //     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     //     return this._Http.get(Config.Url + 'test/', {headers});

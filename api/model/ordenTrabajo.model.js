@@ -9,6 +9,9 @@ const Moment = require('moment');
         Solicitante     : { type: Schema.ObjectId, ref: 'Empleado'},
         Taller          : { type: Schema.ObjectId, ref: 'Taller'},
         Vehiculo        : { type: Schema.ObjectId, ref: 'Vehiculo'},
+        Iva             : { type: Schema.ObjectId, ref: 'Iva'},
+        Total           : {type: Number, default: 0},
+        Estado          : { type: String, default: 'Pendiente', required: true },
         Created     : {
             By      : { type: Schema.ObjectId, ref: 'Usuario' },
             At      : { type: String, default: Moment().unix(), required: false }
