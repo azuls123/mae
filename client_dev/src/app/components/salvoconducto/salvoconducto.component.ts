@@ -663,4 +663,131 @@ export class SalvoconductoComponent implements OnInit {
     doc.save(Nombre + ".pdf");
     // doc.save("test"+".pdf");
   }
+  
+  getPdf() {
+    const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
+    let fecha = new Date();
+    let Nombre = "Salvoconductos_H" + fecha.getHours() + "_" + fecha.getMinutes() + "_" + fecha.getSeconds() + "_F" + fecha.getDate() + "_" + (fecha.getMonth() + 1) + "_" + fecha.getFullYear();
+    const imageData = "/assets/img/logos/mae16-9.png",
+      format = "PNG",
+      x = 17,
+      y = 17,
+      width = 40,
+      height = 40,
+      alias = "",
+      compression = "MEDIUM",
+      rotation = 0
+    // ancho maximo 446
+
+
+    const DateOptions: any = {
+      align: 'right'
+    }
+    doc.setFont('Helvetica', '', 'normal');
+    doc.setFontSize(10);
+    doc.text(
+      "Fecha: " + this.datePipe.transform(fecha, 'd, MMMM, yyyy. h:mm a'),
+      // "Fecha: " + fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds()+", "+fecha.getDate()+" de "+(fecha.getMonth() +1)+" del "+fecha.getFullYear(), 
+      416,
+      63,
+      DateOptions
+    );
+    const BodyOptions: any = {
+      align: 'left'
+    }
+    let subtitulo = 'Informe de Salvoconductos: ';
+    if (this.searchTextSalvo && this.searchTextSalvo != '') {
+      subtitulo = subtitulo + ' ' + this.searchTitleSalvo + ', que contenga: "' + this.searchTextSalvo + '".';
+    } else {
+      subtitulo = subtitulo + 'Informe General';
+    }
+    doc.setFont('Helvetica', '', 'normal');
+    doc.setFontSize(11);
+    doc.text(subtitulo, 30, 79, BodyOptions);
+    let margin: any = {
+      bottom: 80,
+      top: 80
+    };
+    let body = [];
+
+    for (const salvo of this.Salvoconductos) {
+      let Recorrido =0;
+      if (salvo.Recorrido >=1) Recorrido = salvo.KmInicial + salvo.Recorrido;
+      body.push([
+        this.datePipe.transform(salvo.Emision.Fecha, "d, MMMM, yyyy h:mm a"),
+        salvo.Motivo,
+        this.datePipe.transform(salvo.Fecha.Salida, "d, MMMM, yyyy h:mm a"),
+        this.datePipe.transform(salvo.Fecha.Estimada, "d, MMMM, yyyy h:mm a"),
+        salvo.Vehiculo.Marca + ' ' + salvo.Vehiculo.Modelo,
+        salvo.Vehiculo.Placa,
+        salvo.KmInicial,
+        Recorrido,
+        salvo.Lugar.Destino,
+        salvo.Numero,
+        salvo.Conductor.Nombres + ' ' + salvo.Conductor.Apellidos + ' - ' + salvo.Conductor.Ci,
+        salvo.Estado
+      ])
+    }
+    doc.autoTable({
+      head: [
+        ['Fecha', 'Motivo', 'Hora Salida', 'Hora Regreso', 'Vehiculo', 'Placas', 'Km Inicio', 
+          'Km Fin', 'Destino', 'No.', 'Conductor', 'Estadp'
+        ]
+      ],
+      body: body,
+      startY: 86,
+      pageBreak: 'auto',
+      margin: margin
+    })
+
+    let identity = JSON.parse(localStorage.getItem('Identity'));
+    let Cedula = identity.Empleado.Ci;
+    let Nombres = identity.Empleado.Nombres + ' ' + identity.Empleado.Apellidos;
+    let Cargo = identity.Empleado.Cargo;
+
+    // doc.setPage(doc.getNumberOfPages());
+    // doc.internal.pageSize.height = lastPageHeight;
+    // doc.setFont('Helvetica', '', 'normal');
+    // doc.setFontSize(14);
+    // doc.text("DIRECCIÓN PROVINCIAL DEL AMBIENTE DE PASTAZA", 223, doc.internal.pageSize.height -50, titleOptions);
+
+    // Fin del Documento 
+
+    for (let i = 1; i <= doc.getNumberOfPages(); i++) {
+      doc.setPage(i);
+      // CABECERAS 
+      doc.addImage(imageData, format, x, y, width, height, alias, compression, rotation);
+      let lastPageHeight = doc.internal.pageSize.height - 70;
+      const titleOptions: any = {
+        align: 'center'
+      }
+      doc.setFont('Helvetica', '', 'bold');
+      doc.setFontSize(22);
+      doc.text("MINISTERIO DEL AMBIENTE", doc.internal.pageSize.width / 2, 37, titleOptions);
+      doc.setFont('Helvetica', '', 'normal');
+      doc.setFontSize(14);
+      doc.text("DIRECCIÓN PROVINCIAL DEL AMBIENTE DE PASTAZA", doc.internal.pageSize.width / 2, 50, titleOptions);
+      // FIN CABECERAS
+
+      // Pie de Página
+      doc.setFontSize(8);
+      doc.text('Página ' + i + ' de ' + doc.getNumberOfPages() + '.', 28, doc.internal.pageSize.height - 32);
+      doc.addImage("/assets/img/logos/logo-ambiente.jpg", 'jpg', doc.internal.pageSize.width - (70 + 30), doc.internal.pageSize.height - (70 - 10), 70, 70, alias, compression, rotation);
+      // Fin Pie de Página
+      if (i == doc.getNumberOfPages()) {
+        // doc.internal.pageSize.height = doc.internal.pageSize.height + 80;
+        doc.setFontSize(11);
+        // doc.text("Emitido por:", doc.internal.pageSize.width / 2, doc.internal.pageSize.height -80, titleOptions);
+        doc.setFont('Helvetica', '', 'normal');
+        doc.setFontSize(11);
+        doc.text("Emitido por: " + Nombres, doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 50, titleOptions);
+        doc.text(Cedula, doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 40, titleOptions);
+        doc.text(Cargo, doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 30, titleOptions);
+      }
+    }
+    // GUARDADO DEL ARCHIVO
+    // doc.autoPrint();
+    doc.save(Nombre + ".pdf");
+    // doc.save("test"+".pdf");
+  }
 }

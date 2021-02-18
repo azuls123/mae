@@ -269,10 +269,10 @@
           <tbody>
             <tr class="selectable" *ngFor="let salvo of Salvoconductos" (click)="viewedSalvo = salvo"
               data-toggle="modal" data-target="#info-modal">
-              <td> {{salvo.Emision.Fecha | date: 'medium'}} </td>
+              <td> {{salvo.Emision.Fecha | date: 'd, MMMM, yyyy h:mm a'}} </td>
               <td> {{salvo.Motivo}} </td>
-              <td> {{salvo.Fecha.Salida | date : 'medium'}} </td>
-              <td> {{salvo.Fecha.Estimada | date : 'medium'}} </td>
+              <td> {{salvo.Fecha.Salida | date : 'd, MMMM, yyyy h:mm a'}} </td>
+              <td> {{salvo.Fecha.Estimada | date : 'd, MMMM, yyyy h:mm a'}} </td>
               <td> {{salvo.Vehiculo.Marca + ' ' + salvo.Vehiculo.Modelo }} </td>
               <td> {{salvo.Vehiculo.Placa}} </td>
               <td> {{salvo.KmInicial}} </td>
@@ -298,6 +298,13 @@
           screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"
           (pageBoundsCorrection)="paginationDataSalvo.currentPage = $event"
           (pageChange)="paginationDataSalvo.currentPage = $event"></pagination-controls>
+
+          <div class="col-12">
+            <button class="btn btn-info pull-right" (click)="getPdf()">
+              <i class="fas fa-file-pdf"></i>
+              Generar Reporte
+            </button>
+          </div>
       </div>
     </div>
   </div>
