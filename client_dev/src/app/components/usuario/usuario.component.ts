@@ -115,6 +115,7 @@ export class UsuarioComponent implements OnInit {
     }
   }
   initEmpleado() {
+    this.SelectedEmpleado = null;
     this.NewEmpleado = {
       _id: undefined,
       Ci: '',
@@ -127,7 +128,8 @@ export class UsuarioComponent implements OnInit {
     }
   }
   onSubmit() {
-    if (this.NewEmpleado._id) {
+    if (this.SelectedEmpleado) {
+      this.newUsuario.Empleado = this.SelectedEmpleado._id;
       (this.newUsuario._id) ? this.onUpdateUser() : this.onCreateUser();
     } else {
       this._empleadoService.Crear(this.NewEmpleado).subscribe(

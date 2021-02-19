@@ -1,5 +1,5 @@
 <div class="col-lg-12 row">
-  <div  *ngIf="isUser" class="col-md-5">
+  <div *ngIf="isUser" class="col-md-5">
     <div widget class="card border-0 box-shadow">
       <div class="card-header transparent border-0 text-muted">
         <h5 class="mb-0">
@@ -153,8 +153,9 @@
             </div>
             <label for="" class="label-control col-md-4"><strong>Cargo:*</strong></label>
             <div class="input-group col-md-8 mb-2">
-              <input type="text" class="form-control" #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo" id="Cargo">
-              <datalist> 
+              <input type="text" class="form-control" list="CargosList" #Cargo=ngModel [(ngModel)]="NewEmpleado.Cargo" name="Cargo"
+                id="Cargo">
+              <datalist id="CargosList">
                 <option value="Director Provincial">Director Provincial</option>
                 <option value="Secretario/a">Secretario/a</option>
                 <option value="Conductor">Conductor</option>

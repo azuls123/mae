@@ -43,8 +43,8 @@
           </div>
           <label for="" class="label-control col-md-4"><strong>Cargo:*</strong></label>
           <div class="input-group col-md-8 mb-2">
-            <input type="text" class="form-control" #Cargo=ngModel [(ngModel)]="newEmpleado.Cargo" name="Cargo" id="Cargo">
-            <datalist> 
+            <input *ngIf="checkCargosUpdate()" list="CargosList" type="text" class="form-control" #Cargo=ngModel [(ngModel)]="newEmpleado.Cargo" name="Cargo" id="Cargo">
+            <datalist id="CargosList"> 
               <option value="Director Provincial">Director Provincial</option>
               <option value="Secretario/a">Secretario/a</option>
               <option value="Conductor">Conductor</option>
