@@ -13,8 +13,11 @@ export class EmpleadoService{
     }
     Crear(Object) : Observable<any> {
         const params = JSON.stringify(Object);
-        const headers = new HttpHeaders().set('Content-Type', 'application/json')
-        .set('Authorization', this.Token);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+        if (this.Token) {
+            headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', this.Token);
+        }
 
         return this._Http.post(this.url + 'crear', params, {headers});
     }
